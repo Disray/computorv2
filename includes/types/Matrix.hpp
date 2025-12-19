@@ -6,13 +6,16 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:28:09 by rrichard          #+#    #+#             */
-/*   Updated: 2025/12/18 13:16:50 by rrichard         ###   ########.fr       */
+/*   Updated: 2025/12/19 10:23:32 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
-#include <sstream>
-#include <optional>
+
+#include <vector>
+#include <iostream>
+
+class Real;
 
 class Matrix
 {
@@ -51,4 +54,5 @@ class Matrix
 		Matrix					operator-( const Matrix& ) const;
 		Matrix					operator*( const Matrix& ) const;
 		Matrix					operator*( const double& scalar ) const;
+		Matrix					operator*( const Real& scalar ) const;
 };

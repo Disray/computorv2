@@ -6,13 +6,11 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:09:02 by rrichard          #+#    #+#             */
-/*   Updated: 2025/12/18 13:17:53 by rrichard         ###   ########.fr       */
+/*   Updated: 2025/12/19 10:30:35 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "types/includes/Complex.hpp"
-#include "types/includes/Real.hpp"
-#include "types/includes/Matrix.hpp"
+#include "../includes/types.hpp"
 #include <string>
 #include <map>
 #include <variant>
@@ -31,6 +29,9 @@ struct Token
 	std::string	value;
 	TokenType	type;
 };
+
+using VarType = std::variant<Real, Complex, Matrix>;
+std::map<std::string, VarType> variables;
 
 struct MathVisitor
 {
@@ -60,10 +61,38 @@ struct MathVisitor
 			throw std::runtime_error("Matrix division not supported");
 		throw std::runtime_error("Unknown operator");
 	}
+	VarType operator()(const Real& scl, const Matrix& m) const
+	{
+		if (op == "*")
+			return (m * scl);
+		if (op == "+")
+			throw std::runtime_error("Cannot add scalar and matrix");
+		if (op == "-")
+			throw std::runtime_error("Cannot sub scalar and matrix");
+		if (op == "/")
+			throw std::runtime_error("Cannot divide scalar and matrix");
+		throw std::runtime_error("Unknown operator");
+	}
+	VarType operator()(const Complex& a, const Real& b) const
+	{
+		if (op == "+")
+			return (a + b);
+		if (op == "-")
+			return (a - b);
+		if (op == "*")
+			return (a * b);
+		if (op == "/")
+			return (a / b);
+		return (Complex(0.));
+	}
+	template<typename T, typename U>
+	VarType operator()(const T& a, const U& b)
+	{	
+		static_cast<void>(a);
+		static_cast<void>(b);
+		throw std::runtime_error("Invalid type operation");
+	}
 };
-
-using VarType = std::variant<Real, Complex, Matrix>;
-std::map<std::string, VarType> variables;
 
 static int	get_precedence( const std::string& op )
 {
@@ -174,7 +203,7 @@ void	process_input( const std::vector<Token>& allTokens )
 	else
 		expressionToken = allTokens;
 	std::vector<Token>	rpn = shunting_yard(expressionToken);
-	VarType				result = evaluate_rpn(rpn, variables);
+	VarType				result = evaluate(rpn);
 
 	if (isAssignment)
 	{

@@ -4,9 +4,9 @@
 
 NAME		:= computor
 CXX			:= c++
-CXXFLAGS	:= -Werror -Wall -Wextra -std=c++20 -MMD -MP
+CXXFLAGS	:= -Werror -Wall -Wextra -std=c++20 -MMD -MP -Iincludes -Iincludes/types
 
-SRCS_PATH = ./
+SRCS_PATH = ./srcs/
 OBJS_PATH = .obj/
 
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_FILES))
@@ -16,7 +16,10 @@ OBJS = $(SRCS:$(SRCS_PATH)%.cpp=$(OBJS_PATH)%.o)
 #                                   SRCS_FILES                                 #
 ################################################################################
 
-SRCS_FILES =	main.cpp 
+SRCS_FILES =	main.cpp \
+				types/Complex.cpp \
+				types/Matrix.cpp \
+				types/Real.cpp \
 
 ################################################################################
 #                                    COlORS                                    #
@@ -65,7 +68,8 @@ $(NAME): $(OBJS_PATH) $(OBJS)
 
 $(OBJS_PATH)%.o: COM_STRING = Compiling
 $(OBJS_PATH)%.o: $(SRCS_PATH)%.cpp
-	@$(call run_and_test, $(CC) $(CFLAGS) -c $< -o $@)
+	@mkdir -p $(dir $@)
+	@$(call run_and_test, $(CXX) $(CXXFLAGS) -c $< -o $@)
 
 clean: COM_STRING = Cleaning
 clean:

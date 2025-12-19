@@ -6,11 +6,11 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:39:01 by rrichard          #+#    #+#             */
-/*   Updated: 2025/12/16 15:56:48 by rrichard         ###   ########.fr       */
+/*   Updated: 2025/12/18 18:32:48 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/Complex.hpp"
+#include "../../includes/types.hpp"
 
 Complex::Complex() : real(0.0), imag(0.0) {}
 
@@ -27,12 +27,28 @@ Complex		Complex::operator+( const Complex& other ) const noexcept
 	return (z);
 }
 
+Complex		Complex::operator+( const Real& real ) const noexcept
+{
+	Complex	z = *this;
+
+	z.real += real.getReal();
+	return (z);
+}
+
 Complex		Complex::operator-( const Complex& other ) const noexcept
 {
 	Complex z(0, 0);
 
 	z.real = this->real - other.real;
 	z.imag = this->imag - other.imag;
+	return (z);
+}
+
+Complex		Complex::operator-( const Real& real ) const noexcept
+{
+	Complex	z = *this;
+
+	z.real -= real.getReal();
 	return (z);
 }
 
@@ -45,12 +61,33 @@ Complex		Complex::operator*( const Complex& other ) const noexcept
 	return (z);
 }
 
+Complex		Complex::operator*( const Real& real ) const noexcept
+{
+	Complex	z = *this;
+	
+	z.real *= real.getReal();
+	z.imag *= real.getReal();
+	return (z);
+}
+
 Complex		Complex::operator/( const Complex& other ) const noexcept
 {
 	Complex z(0, 0);
 
 	z.real = (this->real * other.real + this->imag * other.imag) / (other.real * other.real + other.imag * other.imag);
 	z.imag = (this->imag * other.real - this->real * other.imag) / (other.real * other.real + other.imag * other.imag);
+	return (z);
+}
+
+Complex		Complex::operator/( const Real& real ) const
+{
+	if (real.getReal() == 0.)
+		throw std::runtime_error("Error: cannot divide by zero");
+
+	Complex z = *this;
+
+	z.real /= real.getReal();
+	z.imag /= real.getReal();
 	return (z);
 }
 

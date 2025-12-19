@@ -6,11 +6,11 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 12:10:48 by rrichard          #+#    #+#             */
-/*   Updated: 2025/12/18 13:17:33 by rrichard         ###   ########.fr       */
+/*   Updated: 2025/12/18 14:01:17 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Matrix.hpp"
+#include "../../includes/types.hpp"
 
 Matrix::Matrix( size_t rows, size_t cols )
 {
@@ -184,5 +184,13 @@ Matrix	Matrix::operator*( const double& scalar ) const
 	Matrix	m = *this;
 
 	m.scl(scalar);
+	return (m);
+}
+
+Matrix	Matrix::operator*( const Real& scalar ) const
+{
+	Matrix	m = *this;
+
+	m.scl(scalar.getReal());
 	return (m);
 }

@@ -6,11 +6,11 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:03:10 by rrichard          #+#    #+#             */
-/*   Updated: 2025/12/16 16:36:53 by rrichard         ###   ########.fr       */
+/*   Updated: 2025/12/18 15:31:23 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/Real.hpp"
+#include "../../includes/types.hpp"
 
 Real::Real() : real(0.0) {}
 
@@ -86,4 +86,9 @@ Real&	Real::operator/=( const Real& other )
 bool	Real::operator==( const Real& other ) const noexcept
 {
 	return (this->real == other.real);
+}
+
+double	Real::getReal() const
+{
+	return (this->real);
 }

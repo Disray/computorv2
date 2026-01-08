@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:09:02 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/08 10:07:50 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/08 15:03:14 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ int	main( void )
 					type = VARIABLE;
 				else
 					type = OPERATOR;
-				tokenList.push_back({match_str, type});
+				tokenList.push_back({match_str, type, CONSTANT});
 			}
+			pre_pass_arity(tokenList);
 			process_input(tokenList, variables);
 		}
 		catch (const std::exception& e)

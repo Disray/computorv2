@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:57:52 by rrichard          #+#    #+#             */
-/*   Updated: 2025/12/19 10:33:16 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/08 10:16:24 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,17 +25,19 @@ class Real
 		Real( const Real& ) = default;
 		~Real() = default;
 
-		Real		operator+( const Real& ) const noexcept;
-		Real		operator-( const Real& ) const noexcept;
-		Real		operator*( const Real& ) const noexcept;
-		Real		operator/( const Real& ) const;
-		Real		operator-() const noexcept;
-		Real&		operator=( const Real& ) = default;
-		Real&		operator+=( const Real& ) noexcept;
-		Real&		operator-=( const Real& ) noexcept;
-		Real&		operator*=( const Real& ) noexcept;
-		Real&		operator/=( const Real& );
-		bool		operator==( const Real& ) const noexcept;
+		Real					operator+( const Real& ) const noexcept;
+		Real					operator-( const Real& ) const noexcept;
+		Real					operator*( const Real& ) const noexcept;
+		Real					operator/( const Real& ) const;
+		Real					operator-() const noexcept;
+		Real&					operator=( const Real& ) = default;
+		Real&					operator+=( const Real& ) noexcept;
+		Real&					operator-=( const Real& ) noexcept;
+		Real&					operator*=( const Real& ) noexcept;
+		Real&					operator/=( const Real& );
+		bool					operator==( const Real& ) const noexcept;
+		
+		friend std::ostream&	operator<<( std::ostream&, const Real& );
 
-		double		getReal() const;
+		double					getReal() const;
 };

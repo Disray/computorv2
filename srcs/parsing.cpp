@@ -6,18 +6,22 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 09:43:39 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/08 10:19:13 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/08 16:26:09 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "computor.hpp"
 #include "types.hpp"
 
-static int	get_precedence( const std::string& op )
+static int	get_precedence( const Token& tok )
 {
-	if (op == "*" || op == "/" || op == "%")
+	if (tok.value == "(" || tok.value == ")")
+		return (0);
+	if (tok.arity == UNARY && (tok.value == "+" || tok.value == "-"))
+		return (3);
+	if (tok.value == "*" || tok.value == "/" || tok.value == "%")
 		return (2);
-	if (op == "+" || op == "-")
+	if (tok.value == "+" || tok.value == "-")
 		return (1);
 	return (0);
 }
@@ -38,12 +42,23 @@ static VarType	evaluate( const std::vector<Token>& tokens, const std::map<std::s
 		}
 		else if (token.type == OPERATOR)
 		{
-			if (_stack.size() < 2)
-				throw std::runtime_error("Not enough operands");
+			if (token.arity == UNARY)
+			{
+				if (_stack.empty())
+					throw std::runtime_error("Error: missing operand for unary operator");
 
+				VarType value = _stack.top(); _stack.pop();
+				VarType result = apply_unary_op(token.value, value);
+
+				_stack.push(result);
+				continue;
+			}
+			if (_stack.size() < 2)
+				throw std::runtime_error("Error: missing operand for binary operator");
+			
 			VarType	rhs = _stack.top(); _stack.pop();
 			VarType lhs = _stack.top(); _stack.pop();
-			VarType	result = std::visit(MathVisitor{token.value}, lhs, rhs);
+			VarType	result = apply_binary_op(token.value, lhs, rhs);
 
 			_stack.push(result);
 		}
@@ -80,10 +95,19 @@ static std::vector<Token>	shunting_yard( const std::vector<Token>& tokens )
 			}
 			else
 			{
-				while (!op_stack.empty() && op_stack.top().value != "(" && get_precedence(op_stack.top().value) >= get_precedence(token.value))
+				while (!op_stack.empty() && op_stack.top().value != "(")
 				{
-					output_queue.push_back(op_stack.top());
-					op_stack.pop();
+					const int precedence_top = get_precedence(op_stack.top());
+					const int precedence_current = get_precedence(token);
+					
+					if ((token.arity != UNARY && precedence_top >= precedence_current)
+						|| (token.arity == UNARY && precedence_top > precedence_current))
+					{
+						output_queue.push_back(op_stack.top());
+						op_stack.pop();
+					}
+					else
+						break;
 				}
 				op_stack.push(token);
 			}
@@ -103,7 +127,7 @@ void	process_input( const std::vector<Token>& allTokens, std::map<std::string, V
 {
 	if (allTokens.empty())
 		return ;
-	
+
 	std::string			targetVarName = "";
 	std::vector<Token>	expressionToken;
 	bool				isAssignment = false;
@@ -121,6 +145,7 @@ void	process_input( const std::vector<Token>& allTokens, std::map<std::string, V
 	}
 	else
 		expressionToken = allTokens;
+
 	std::vector<Token>	rpn = shunting_yard(expressionToken);
 	VarType				result = evaluate(rpn, variables);
 
@@ -129,5 +154,37 @@ void	process_input( const std::vector<Token>& allTokens, std::map<std::string, V
 		variables[targetVarName] = result;
 		std::cout << targetVarName << " = ";
 	}
-	std::visit([](const auto& v) { std::cout << v << std::endl; }, result);
+	std::visit([](const auto& v)
+	{
+		std::cout << v << std::endl;
+	}, result);
+}
+
+void	pre_pass_arity( std::vector<Token>& tokens )
+{
+	bool	expects_operands = true;
+
+	for (auto& token : tokens)
+	{
+		if (token.type == VARIABLE || token.type == NUMBER)
+		{
+			expects_operands = false;
+			continue;
+		}
+		if (token.type == OPERATOR)
+		{
+			if (token.value == "(")
+			{
+				expects_operands = true;
+				continue;
+			}
+			if (token.value == ")")
+			{
+				expects_operands = false;
+				continue;
+			}
+			token.arity = expects_operands ? UNARY : BINARY;
+			expects_operands = true;
+		}
+	}
 }

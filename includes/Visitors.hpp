@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 10:16:11 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 10:25:15 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 12:13:43 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,12 @@ struct BinaryOpVisitor
 	std::string	op;
 
 	VarType	operator()( const Real&, const Real& ) const;
+	VarType operator()( const Complex&, const Real& ) const;
+	VarType	operator()( const Real&, const Complex& ) const;
+	VarType	operator()( const Complex&, const Complex& ) const;
+
 	VarType operator()( const Matrix&, const Matrix& ) const;
 	VarType operator()( const Real&, const Matrix& ) const;
-	VarType operator()( const Complex&, const Real& ) const;
 
 	template<typename T, typename U>
 	VarType operator()( const T&, const U& ) const;

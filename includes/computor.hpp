@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 09:40:35 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 10:15:01 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 10:31:44 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ using VarType = std::variant<Real, Complex, Matrix>;
 VarType	apply_unary_op( const std::string& op, const VarType& a );
 VarType	apply_binary_op( const std::string& op, const VarType& lhs, const VarType& rhs );
 
-void	process_input( const std::vector<Token>&, std::map<std::string, VarType>& );
-void	pre_pass_arity( std::vector<Token>& tokens );
-void	pre_pass_impl_multi( std::vector<Token>& tokens );
+std::vector<Token>	lexer( const std::string& input );
+void				process_input( const std::vector<Token>&, std::map<std::string, VarType>& );
+void				pre_pass_arity( std::vector<Token>& tokens );
+void				pre_pass_impl_multi( std::vector<Token>& tokens );

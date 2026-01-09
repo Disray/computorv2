@@ -6,12 +6,11 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 09:43:39 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/08 16:26:09 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 10:33:35 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "computor.hpp"
-#include "types.hpp"
 
 static int	get_precedence( const Token& tok )
 {
@@ -34,6 +33,8 @@ static VarType	evaluate( const std::vector<Token>& tokens, const std::map<std::s
 	{
 		if (token.type == NUMBER)
 			_stack.push(Real(std::stod(token.value)));
+		else if (token.type == IMAGINARY)
+			_stack.push(Complex(0, 1));
 		else if (token.type == VARIABLE)
 		{
 			if (variables.find(token.value) == variables.end())
@@ -75,7 +76,7 @@ static std::vector<Token>	shunting_yard( const std::vector<Token>& tokens )
 
 	for (const auto& token : tokens)
 	{
-		if (token.type == NUMBER || token.type == VARIABLE)
+		if (token.type == NUMBER || token.type == VARIABLE || token.type == IMAGINARY)
 			output_queue.push_back(token);
 		else if (token.type == OPERATOR)
 		{
@@ -158,33 +159,4 @@ void	process_input( const std::vector<Token>& allTokens, std::map<std::string, V
 	{
 		std::cout << v << std::endl;
 	}, result);
-}
-
-void	pre_pass_arity( std::vector<Token>& tokens )
-{
-	bool	expects_operands = true;
-
-	for (auto& token : tokens)
-	{
-		if (token.type == VARIABLE || token.type == NUMBER)
-		{
-			expects_operands = false;
-			continue;
-		}
-		if (token.type == OPERATOR)
-		{
-			if (token.value == "(")
-			{
-				expects_operands = true;
-				continue;
-			}
-			if (token.value == ")")
-			{
-				expects_operands = false;
-				continue;
-			}
-			token.arity = expects_operands ? UNARY : BINARY;
-			expects_operands = true;
-		}
-	}
 }

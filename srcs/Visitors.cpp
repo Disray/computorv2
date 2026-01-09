@@ -6,12 +6,12 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 16:04:32 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 10:23:09 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 11:29:00 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "computor.hpp"
-#include "Visitors.hpp"
+#include "visitors.hpp"
 
 VarType	UnaryOpVisitor::operator()( const Real& a ) const
 {
@@ -52,6 +52,7 @@ VarType	BinaryOpVisitor::operator()( const Real& a, const Real& b ) const
 		return (a / b);
 	throw std::runtime_error("Unknown operator: " + op);
 }
+
 VarType BinaryOpVisitor::operator()( const Matrix& a, const Matrix& b ) const
 {
 	if (op == "+")
@@ -64,6 +65,7 @@ VarType BinaryOpVisitor::operator()( const Matrix& a, const Matrix& b ) const
 		throw std::runtime_error("Matrix division not supported");
 	throw std::runtime_error("Unknown operator: " + op);
 }
+
 VarType BinaryOpVisitor::operator()( const Real& scl, const Matrix& m ) const
 {
 	if (op == "*")
@@ -76,16 +78,39 @@ VarType BinaryOpVisitor::operator()( const Real& scl, const Matrix& m ) const
 		throw std::runtime_error("Cannot divide scalar and matrix");
 	throw std::runtime_error("Unknown operator: " + op);
 }
-VarType BinaryOpVisitor::operator()( const Complex& a, const Real& b ) const
+
+VarType BinaryOpVisitor::operator()( const Complex& z, const Real& b ) const
 {
 	if (op == "+")
-		return (a + b);
+		return (z + b);
 	if (op == "-")
-		return (a - b);
+		return (z - b);
 	if (op == "*")
-		return (a * b);
+		return (z * b);
 	if (op == "/")
-		return (a / b);
+		return (z / b);
+	throw std::runtime_error("Unkown operator: " + op);
+}
+
+VarType BinaryOpVisitor::operator()( const Real& a, const Complex& z ) const
+{
+	if (op == "+")
+		return (a + z);
+	if (op == "-")
+		return (a - z);
+	if (op == "*")
+		return (a * z);
+	if (op == "/")
+		return (a / z);
+	throw std::runtime_error("Unkown operator: " + op);
+}
+
+VarType	BinaryOpVisitor::operator()( const Complex& z1, const Complex& z2 ) const
+{
+	if (op == "+") return (z1 + z2);
+	if (op == "-") return (z1 - z2);
+	if (op == "*") return (z1 * z2);
+	if (op == "/") return (z1 / z2);
 	throw std::runtime_error("Unkown operator: " + op);
 }
 

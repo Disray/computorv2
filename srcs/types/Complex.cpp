@@ -6,11 +6,11 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:39:01 by rrichard          #+#    #+#             */
-/*   Updated: 2025/12/18 18:32:48 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 12:13:16 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/types.hpp"
+#include "computor.hpp"
 
 Complex::Complex() : real(0.0), imag(0.0) {}
 
@@ -18,20 +18,32 @@ Complex::Complex( double r, double i ) : real(r), imag(i) {}
 
 Complex::Complex( double r ) : real(r), imag(0.0) {}
 
+double	Complex::getReal() const
+{
+	return (this->real);
+}
+
+double	Complex::getImag() const
+{
+	return (this->imag);
+}
+
+void	Complex::setReal( double value )
+{
+	this->real = value;
+}
+
+void	Complex::setImag( double value )
+{
+	this->imag = value;
+}
+
 Complex		Complex::operator+( const Complex& other ) const noexcept
 {
 	Complex z(0, 0);
 
 	z.real = this->real + other.real;
 	z.imag = this->imag + other.imag;
-	return (z);
-}
-
-Complex		Complex::operator+( const Real& real ) const noexcept
-{
-	Complex	z = *this;
-
-	z.real += real.getReal();
 	return (z);
 }
 
@@ -44,14 +56,6 @@ Complex		Complex::operator-( const Complex& other ) const noexcept
 	return (z);
 }
 
-Complex		Complex::operator-( const Real& real ) const noexcept
-{
-	Complex	z = *this;
-
-	z.real -= real.getReal();
-	return (z);
-}
-
 Complex		Complex::operator*( const Complex& other ) const noexcept
 {
 	Complex	z(0, 0);
@@ -61,33 +65,12 @@ Complex		Complex::operator*( const Complex& other ) const noexcept
 	return (z);
 }
 
-Complex		Complex::operator*( const Real& real ) const noexcept
-{
-	Complex	z = *this;
-	
-	z.real *= real.getReal();
-	z.imag *= real.getReal();
-	return (z);
-}
-
 Complex		Complex::operator/( const Complex& other ) const noexcept
 {
 	Complex z(0, 0);
 
 	z.real = (this->real * other.real + this->imag * other.imag) / (other.real * other.real + other.imag * other.imag);
 	z.imag = (this->imag * other.real - this->real * other.imag) / (other.real * other.real + other.imag * other.imag);
-	return (z);
-}
-
-Complex		Complex::operator/( const Real& real ) const
-{
-	if (real.getReal() == 0.)
-		throw std::runtime_error("Error: cannot divide by zero");
-
-	Complex z = *this;
-
-	z.real /= real.getReal();
-	z.imag /= real.getReal();
 	return (z);
 }
 
@@ -181,4 +164,82 @@ std::ostream&	operator<<( std::ostream& os, const Complex& z )
 	else
 		os << "- " << -im << "i";
 	return (os);
+}
+
+Complex	operator+( const Complex& z, const Real& x )
+{
+	Complex	z1(0);
+
+	z1.setReal(z.getReal() + x.getReal());
+	z1.setImag(z.getImag());
+	return (z1);
+}
+
+Complex	operator+( const Real& x, const Complex& z )
+{
+	Complex	z1(0);
+
+	z1.setReal(z.getReal() + x.getReal());
+	z1.setImag(z.getImag());
+	return (z1);
+}
+
+Complex	operator-( const Complex& z, const Real& x )
+{
+	Complex	z1(0);
+
+	z1.setReal(z.getReal() - x.getReal());
+	z1.setImag(z.getImag());
+	return (z1);
+}
+
+Complex	operator-( const Real& x, const Complex& z )
+{
+	Complex	z1(0);
+
+	z1.setReal(z.getReal() - x.getReal());
+	z1.setImag(z.getImag());
+	return (z1);
+}
+
+Complex	operator*( const Complex& z, const Real& x )
+{
+	Complex	z1(0);
+
+	z1.setReal(x.getReal() * z.getReal());
+	z1.setImag(x.getReal() * z.getImag());
+	return (z1);
+}
+
+Complex	operator*( const Real& x, const Complex& z )
+{
+	Complex	z1(0);
+
+	z1.setReal(x.getReal() * z.getReal());
+	z1.setImag(x.getReal() * z.getImag());
+	return (z1);
+}
+
+Complex	operator/( const Complex& z, const Real& x )
+{
+	if (x.getReal() == 0.)
+		throw std::runtime_error("Error: cannot divide by zero");
+
+	Complex z1(0);
+
+	z1.setReal(z.getReal() / x.getReal());
+	z1.setImag(z.getImag() / x.getReal());
+	return (z1);
+}
+
+Complex	operator/( const Real& x, const Complex& z )
+{
+	if (z.getReal() == 0. && z.getImag() == 0.)
+		throw std::runtime_error("Error: cannot divide by zero");
+
+	Complex z1(0);
+
+	z1.setReal(x.getReal() / z.getReal());
+	z1.setImag(x.getReal() / z.getImag());
+	return (z1);
 }

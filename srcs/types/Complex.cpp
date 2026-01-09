@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:39:01 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 12:13:16 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 14:23:29 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,21 +95,25 @@ Complex&	Complex::operator-=( const Complex& other ) noexcept
 
 Complex&	Complex::operator*=( const Complex& other ) noexcept
 {
-	double real = this->real;
-	double imag = this->imag;
+	double	new_real = this->real;
+	double	new_imag = this->imag;
 
-	real = real * other.real - imag * other.imag;
-	imag = real * other.imag + imag * other.real;
+	new_real = real * other.real - imag * other.imag;
+	new_imag = real * other.imag + imag * other.real;
+	this->real = new_real;
+	this->imag = new_imag;
 	return (*this);
 }
 
 Complex&	Complex::operator/=( const Complex& other ) noexcept
 {
-	double real = this->real;
-	double imag = this->imag;
+	double	new_real = this->real;
+	double	new_imag = this->imag;
 
-	real = (real * other.real + imag * other.imag) / (other.real * other.real + other.imag * other.imag);
-	imag = (imag * other.real - real * other.imag) / (other.real * other.real + other.imag * other.imag);
+	new_real = (real * other.real + imag * other.imag) / (other.real * other.real + other.imag * other.imag);
+	new_imag = (imag * other.real - real * other.imag) / (other.real * other.real + other.imag * other.imag);
+	this->real = new_real;
+	this->imag = new_imag;
 	return (*this);
 }
 
@@ -197,8 +201,8 @@ Complex	operator-( const Real& x, const Complex& z )
 {
 	Complex	z1(0);
 
-	z1.setReal(z.getReal() - x.getReal());
-	z1.setImag(z.getImag());
+	z1.setReal(x.getReal() - z.getReal());
+	z1.setImag(-z.getImag());
 	return (z1);
 }
 

@@ -6,11 +6,11 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 12:10:48 by rrichard          #+#    #+#             */
-/*   Updated: 2025/12/18 14:01:17 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 12:47:41 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/types.hpp"
+#include "computor.hpp"
 
 Matrix::Matrix( size_t rows, size_t cols )
 {

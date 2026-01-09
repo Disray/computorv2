@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:09:02 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 11:20:10 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 14:30:37 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ int	main( void )
 
 			pre_pass_arity(tokens);
 			pre_pass_impl_multi(tokens);
-			for (auto& i : tokens)
-				std::cout << i.value << " | " << i.type << std::endl;
+			// for (auto& i : tokens)
+			// 	std::cout << i.value << " | " << i.type << " | " << i.arity << std::endl;
 			process_input(tokens, variables);
 		}
 		catch (const std::exception& e)

@@ -6,11 +6,11 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:03:10 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/08 10:18:37 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 12:47:52 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/types.hpp"
+#include "computor.hpp"
 
 Real::Real() : real(0.0) {}
 

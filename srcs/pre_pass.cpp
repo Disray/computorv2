@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 10:33:18 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 11:19:19 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 14:28:51 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	pre_pass_arity( std::vector<Token>& tokens )
 
 	for (auto& token : tokens)
 	{
-		if (token.type == VARIABLE || token.type == NUMBER)
+		if (token.type == VARIABLE || token.type == NUMBER || token.type == IMAGINARY)
 		{
 			expects_operands = false;
 			continue;

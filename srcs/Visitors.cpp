@@ -6,105 +6,96 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 16:04:32 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/08 16:22:03 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 10:23:09 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "computor.hpp"
-#include "types.hpp"
+#include "Visitors.hpp"
 
-struct UnaryOpVisitor
+VarType	UnaryOpVisitor::operator()( const Real& a ) const
 {
-	std::string	op;
+	if (op == "+")
+		return (a);
+	if (op == "-")
+		return (Real(-a));
+	throw std::runtime_error("Unknown unary operator");
+}
 
-	VarType	operator()(const Real& a) const
-	{
-		if (op == "+")
-			return (a);
-		if (op == "-")
-			return (Real(-a));
-		throw std::runtime_error("Unknown unary operator");
-	}
-	VarType	operator()(const Complex& a) const
-	{
-		if (op == "+")
-			return (a);
-		if (op == "-")
-			return (Complex(-a));
-		throw std::runtime_error("Unknown unary operator");
-	}
-	VarType	operator()(const Matrix& m) const
-	{
-		if (op == "+")
-			return (m);
-		if (op == "-")
-			return (m * Real(-1));
-		throw std::runtime_error("Unknown unary operator");
-	}
-};
-
-#include <iostream>
-struct BinaryOpVisitor
+VarType	UnaryOpVisitor::operator()( const Complex& c ) const
 {
-	std::string	op;
+	if (op == "+")
+		return (c);
+	if (op == "-")
+		return (Complex(-c));
+	throw std::runtime_error("Unknown unary operator");
+}
 
-	VarType	operator()(const Real& a, const Real& b) const
-	{
-		if (op == "+")
-			return (a + b);
-		if (op == "-")
-			return (a - b);
-		if (op == "*")
-			return (a * b);
-		if (op == "/")
-			return (a / b);
-		throw std::runtime_error("Unknown operator: " + op);
-	}
-	VarType operator()(const Matrix& a, const Matrix& b) const
-	{
-		if (op == "+")
-			return (a + b);
-		if (op == "-")
-			return (a - b);
-		if (op == "*")
-			return (a * b);
-		if (op == "/")
-			throw std::runtime_error("Matrix division not supported");
-		throw std::runtime_error("Unknown operator: " + op);
-	}
-	VarType operator()(const Real& scl, const Matrix& m) const
-	{
-		if (op == "*")
-			return (m * scl);
-		if (op == "+")
-			throw std::runtime_error("Cannot add scalar and matrix");
-		if (op == "-")
-			throw std::runtime_error("Cannot sub scalar and matrix");
-		if (op == "/")
-			throw std::runtime_error("Cannot divide scalar and matrix");
-		throw std::runtime_error("Unknown operator: " + op);
-	}
-	VarType operator()(const Complex& a, const Real& b) const
-	{
-		if (op == "+")
-			return (a + b);
-		if (op == "-")
-			return (a - b);
-		if (op == "*")
-			return (a * b);
-		if (op == "/")
-			return (a / b);
-		throw std::runtime_error("Unkown operator: " + op);
-	}
+VarType	UnaryOpVisitor::operator()( const Matrix& m ) const
+{
+	if (op == "+")
+		return (m);
+	if (op == "-")
+		return (m * Real(-1));
+	throw std::runtime_error("Unknown unary operator");
+}
 
-	template<typename T, typename U>
-	VarType operator()(const T& a, const U& b) const
-	{	
-		static_cast<void>(a);
-		static_cast<void>(b);
-		throw std::runtime_error("Invalid type operation");
-	}
-};
+VarType	BinaryOpVisitor::operator()( const Real& a, const Real& b ) const
+{
+	if (op == "+")
+		return (a + b);
+	if (op == "-")
+		return (a - b);
+	if (op == "*")
+		return (a * b);
+	if (op == "/")
+		return (a / b);
+	throw std::runtime_error("Unknown operator: " + op);
+}
+VarType BinaryOpVisitor::operator()( const Matrix& a, const Matrix& b ) const
+{
+	if (op == "+")
+		return (a + b);
+	if (op == "-")
+		return (a - b);
+	if (op == "*")
+		return (a * b);
+	if (op == "/")
+		throw std::runtime_error("Matrix division not supported");
+	throw std::runtime_error("Unknown operator: " + op);
+}
+VarType BinaryOpVisitor::operator()( const Real& scl, const Matrix& m ) const
+{
+	if (op == "*")
+		return (m * scl);
+	if (op == "+")
+		throw std::runtime_error("Cannot add scalar and matrix");
+	if (op == "-")
+		throw std::runtime_error("Cannot sub scalar and matrix");
+	if (op == "/")
+		throw std::runtime_error("Cannot divide scalar and matrix");
+	throw std::runtime_error("Unknown operator: " + op);
+}
+VarType BinaryOpVisitor::operator()( const Complex& a, const Real& b ) const
+{
+	if (op == "+")
+		return (a + b);
+	if (op == "-")
+		return (a - b);
+	if (op == "*")
+		return (a * b);
+	if (op == "/")
+		return (a / b);
+	throw std::runtime_error("Unkown operator: " + op);
+}
+
+template<typename T, typename U>
+VarType BinaryOpVisitor::operator()( const T& a, const U& b ) const
+{	
+	static_cast<void>(a); static_cast<void>(b);
+	throw std::runtime_error("Invalid type operation");
+}
+
 
 VarType	apply_unary_op( const std::string& op, const VarType& a )
 {

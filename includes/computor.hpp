@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 09:40:35 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/08 16:11:29 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/09 10:15:01 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 #include <string>
 #include <stdexcept>
 #include <variant>
-#include "types.hpp"
+#include <iostream>
+#include "Complex.hpp"
+#include "Matrix.hpp"
+#include "Real.hpp"
 
 enum TokenType
 {
 	NUMBER,
 	VARIABLE,
+	IMAGINARY,
 	OPERATOR,
 	UNKOWN
 };
@@ -46,3 +50,4 @@ VarType	apply_binary_op( const std::string& op, const VarType& lhs, const VarTyp
 
 void	process_input( const std::vector<Token>&, std::map<std::string, VarType>& );
 void	pre_pass_arity( std::vector<Token>& tokens );
+void	pre_pass_impl_multi( std::vector<Token>& tokens );

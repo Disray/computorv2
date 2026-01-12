@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.cpp                                        :+:      :+:    :+:   */
+/*   parse_and_assign.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 09:43:39 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:09:07 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/12 15:13:06 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/12 15:13:12 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parser.hpp"
 
-void	parser( const std::vector<Token>& tokens, Context& ctx )
+void	parse_and_assign( const std::vector<Token>& tokens, Context& ctx )
 {
 	if (tokens.empty())
 		return ;

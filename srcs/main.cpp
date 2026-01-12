@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:09:02 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:09:19 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/12 15:14:23 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	main( void )
 
 			pre_pass_arity(tokens);
 			pre_pass_impl_multi(tokens);
-			parser(tokens, ctx);
+			parse_and_assign(tokens, ctx);
 		}
 		catch (const std::exception& e)
 		{

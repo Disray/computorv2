@@ -6,25 +6,26 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 10:16:11 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 12:13:43 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/12 10:43:50 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
+
 #include "computor.hpp"
 
 struct UnaryOpVisitor
 {
-	std::string	op;
+	OpKind	value;
 
-	VarType	operator()( const Real& ) const;
+	VarType	operator()( const Real& )    const;
 	VarType	operator()( const Complex& ) const;
-	VarType	operator()( const Matrix& ) const;
+	VarType	operator()( const Matrix& )  const;
 };
 
 struct BinaryOpVisitor
 {
-	std::string	op;
+	OpKind	value;
 
 	VarType	operator()( const Real&, const Real& ) const;
 	VarType operator()( const Complex&, const Real& ) const;
@@ -37,3 +38,6 @@ struct BinaryOpVisitor
 	template<typename T, typename U>
 	VarType operator()( const T&, const U& ) const;
 };
+
+VarType	apply_unary_op( const OpKind&, const VarType& );
+VarType	apply_binary_op( const OpKind&, const VarType&, const VarType& );

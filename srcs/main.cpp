@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:09:02 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 14:30:37 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/12 14:53:42 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 #include <map>
 #include <variant>
 #include <regex>
-#include "computor.hpp"
+#include "Parser.hpp"
 
 int	main( void )
 {
-	std::string						input;
-	std::map<std::string, VarType>	variables;
+	std::string	input;
+	Context		ctx;
 
 	while (true)
 	{
@@ -27,12 +27,16 @@ int	main( void )
 		try
 		{
 			auto	tokens = lexer(input);
-
 			pre_pass_arity(tokens);
 			pre_pass_impl_multi(tokens);
-			// for (auto& i : tokens)
-			// 	std::cout << i.value << " | " << i.type << " | " << i.arity << std::endl;
-			process_input(tokens, variables);
+
+			Parser	parser(tokens);
+			auto	ast = parser.parse();
+			VarType	result = ast->eval(ctx);
+			std::visit([](const auto& v)
+			{
+				std::cout << v << std::endl;
+			}, result);
 		}
 		catch (const std::exception& e)
 		{

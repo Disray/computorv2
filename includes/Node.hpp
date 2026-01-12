@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 09:51:58 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 10:35:03 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/12 11:55:53 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 #include <memory>
 #include <string>
 #include "computor.hpp"
-#include "visitors.hpp"
+#include "Visitors.hpp"
+
+struct Node;
+using NodePtr = std::unique_ptr<Node>;
 
 struct Node
 {
@@ -24,8 +27,6 @@ struct Node
 	virtual	NodePtr	clone() const = 0;
 	virtual VarType	eval( Context& ) const = 0;
 };
-
-using NodePtr = std::unique_ptr<Node>;
 
 struct NumberNode final : Node
 {
@@ -36,7 +37,11 @@ struct NumberNode final : Node
 	NodePtr	clone() const override
 	{
 		return (std::make_unique<NumberNode>(value));
-	}	
+	}
+	VarType	eval( Context& ) const override
+	{
+		return (Real(value));
+	}
 };
 
 struct ImaginaryNode final : Node
@@ -44,6 +49,10 @@ struct ImaginaryNode final : Node
 	NodePtr	clone() const override
 	{
 		return (std::make_unique<ImaginaryNode>());
+	}
+	VarType	eval( Context& ) const override
+	{
+		return (Complex(0, 1));
 	}
 };
 
@@ -57,6 +66,13 @@ struct BinaryOpNode final : Node
 	NodePtr	clone() const override
 	{
 		return (std::make_unique<BinaryOpNode>(op, left->clone(), right->clone()));
+	}
+	VarType	eval( Context& ctx ) const override
+	{
+		VarType	lhs = left->eval(ctx);
+		VarType	rhs = right->eval(ctx);
+
+		return (apply_binary_op(op, lhs, rhs));
 	}
 };
 
@@ -75,7 +91,7 @@ struct UnaryOpNode final : Node
 	{
 		VarType	value = child->eval(ctx);
 
-		apply_unary_op(op, value);
+		return (apply_unary_op(op, value));
 	}
 };
 
@@ -93,6 +109,7 @@ struct VariableNode final : Node
 	{
 		if (!ctx.contains(name))
 			throw std::runtime_error("Undefined variable: " + name);
+
 		return (ctx.at(name));
 	}
 };

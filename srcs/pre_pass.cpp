@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 10:33:18 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 14:28:51 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/12 14:51:44 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@ void	pre_pass_arity( std::vector<Token>& tokens )
 
 	for (auto& token : tokens)
 	{
-		if (token.type == VARIABLE || token.type == NUMBER || token.type == IMAGINARY)
+		if (token.type == TokenType::VARIABLE || token.type == TokenType::NUMBER || token.type == TokenType::IMAGINARY)
 		{
 			expects_operands = false;
 			continue;
 		}
-		if (token.type == OPERATOR)
+		if (token.type == TokenType::OPERATOR)
 		{
 			if (token.value == "(")
 			{
@@ -35,22 +35,28 @@ void	pre_pass_arity( std::vector<Token>& tokens )
 				expects_operands = false;
 				continue;
 			}
-			token.arity = expects_operands ? UNARY : BINARY;
+			token.arity = expects_operands ? Arity::UNARY : Arity::BINARY;
 			expects_operands = true;
 		}
 	}
 }
 
-static bool	ends_expression( const Token& token )
+bool	ends_expression( const Token& token )
 {
-	if (token.type == NUMBER || token.type == VARIABLE || token.type == IMAGINARY || token.value == ")")
+	if (token.type  == TokenType::NUMBER    ||
+		token.type  == TokenType::VARIABLE  || 
+		token.type  == TokenType::IMAGINARY || 
+		token.value == ")")
 		return (true);
 	return (false);
 }
 
-static bool	starts_expression( const Token& token )
+bool	starts_expression( const Token& token )
 {
-	if (token.type == NUMBER || token.type == VARIABLE || token.type == IMAGINARY || token.value == "(" || token.arity == UNARY)
+	if (token.type  == TokenType::NUMBER    ||
+		token.type  == TokenType::VARIABLE  ||
+		token.type  == TokenType::IMAGINARY ||
+		token.value == "(")
 		return (true);
 	return (false);
 }
@@ -63,7 +69,7 @@ void	pre_pass_impl_multi( std::vector<Token>& tokens )
 	{
 		if (ends_expression(tokens[i]) && starts_expression(tokens[i + 1]))
 		{
-			tokens.insert(tokens.begin() + (i + 1), {"*", OPERATOR, BINARY});
+			tokens.insert(tokens.begin() + (i + 1), Token("*", TokenType::OPERATOR, Arity::BINARY));
 			i++;
 		}
 		else

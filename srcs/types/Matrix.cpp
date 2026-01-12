@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 12:10:48 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 12:47:41 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/11 17:58:20 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,14 @@ Matrix	Matrix::operator-( const Matrix& other ) const
 	Matrix	m = *this;
 
 	m.sub(other);
+	return (m);
+}
+
+Matrix	Matrix::operator-() const
+{
+	Matrix m = *this;
+
+	m.scl(-1.);
 	return (m);
 }
 

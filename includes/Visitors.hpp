@@ -6,13 +6,13 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 10:47:39 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 11:42:18 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/12 15:50:46 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "computor.hpp"
+#include "RuntimeTypes.hpp"
 
 struct UnaryOpVisitor
 {

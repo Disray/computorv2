@@ -1,21 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   computor.hpp                                       :+:      :+:    :+:   */
+/*   Nodes.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 09:40:35 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:47:27 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/12 15:41:30 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/12 15:41:49 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <vector>
-#include "RuntimeTypes.hpp"
-
-std::vector<Token>	lexer( const std::string&  );
-void				parse_and_assign( const std::vector<Token>&, Context& );
-void				pre_pass_arity( std::vector<Token>& );
-void				pre_pass_impl_multi( std::vector<Token>& );
+#include "BaseNode.hpp"
+#include "BinaryOpNode.hpp"
+#include "UnaryOpNode.hpp"
+#include "NumberNode.hpp"
+#include "VariableNode.hpp"
+#include "ImaginaryNode.hpp"

@@ -4,7 +4,7 @@
 
 NAME		:= computor
 CXX			:= c++
-CXXFLAGS	:= -Werror -Wall -Wextra -std=c++20 -MMD -MP -Iincludes -Iincludes/types
+CXXFLAGS	:= -Werror -Wall -Wextra -std=c++20 -MMD -MP -Iincludes -Iincludes/Types -Iincludes/Nodes
 
 SRCS_PATH = ./srcs/
 OBJS_PATH = .obj/

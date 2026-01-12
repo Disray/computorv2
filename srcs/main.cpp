@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 18:09:02 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:14:23 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/12 15:45:38 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <map>
 #include <variant>
 #include <regex>
-#include "Parser.hpp"
+#include "computor.hpp"
 
 int	main( void )
 {

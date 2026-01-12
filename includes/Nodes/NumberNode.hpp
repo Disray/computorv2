@@ -1,21 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   computor.hpp                                       :+:      :+:    :+:   */
+/*   NumberNode.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 09:40:35 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:47:27 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/12 15:22:58 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/12 15:36:19 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <vector>
-#include "RuntimeTypes.hpp"
+#include "BaseNode.hpp"
 
-std::vector<Token>	lexer( const std::string&  );
-void				parse_and_assign( const std::vector<Token>&, Context& );
-void				pre_pass_arity( std::vector<Token>& );
-void				pre_pass_impl_multi( std::vector<Token>& );
+struct NumberNode final : BaseNode
+{
+	double	value;
+
+	explicit NumberNode( double v ) : value(v) {}
+
+	NodePtr	clone() const override
+	{
+		return (std::make_unique<NumberNode>(value));
+	}
+	VarType	eval( Context& ) const override
+	{
+		return (Real(value));
+	}
+};

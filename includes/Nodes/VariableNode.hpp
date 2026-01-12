@@ -1,21 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   computor.hpp                                       :+:      :+:    :+:   */
+/*   VariableNode.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 09:40:35 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:47:27 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/12 15:25:19 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/12 15:36:25 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <vector>
-#include "RuntimeTypes.hpp"
+#include "BaseNode.hpp"
 
-std::vector<Token>	lexer( const std::string&  );
-void				parse_and_assign( const std::vector<Token>&, Context& );
-void				pre_pass_arity( std::vector<Token>& );
-void				pre_pass_impl_multi( std::vector<Token>& );
+struct VariableNode final : BaseNode
+{
+	std::string	name;
+	
+	explicit VariableNode( std::string n ) : name(std::move(n)) {}
+
+	NodePtr	clone() const override
+	{
+		return (std::make_unique<VariableNode>(name));
+	}
+	VarType	eval( Context& ctx ) const override
+	{
+		if (!ctx.contains(name))
+			throw std::runtime_error("Undefined variable: " + name);
+
+		return (ctx.at(name));
+	}
+};

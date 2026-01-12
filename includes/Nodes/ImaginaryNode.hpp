@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   computor.hpp                                       :+:      :+:    :+:   */
+/*   ImaginaryNode.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 09:40:35 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:47:27 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/12 15:25:50 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/12 15:36:16 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <vector>
-#include "RuntimeTypes.hpp"
+#include "BaseNode.hpp"
 
-std::vector<Token>	lexer( const std::string&  );
-void				parse_and_assign( const std::vector<Token>&, Context& );
-void				pre_pass_arity( std::vector<Token>& );
-void				pre_pass_impl_multi( std::vector<Token>& );
+struct ImaginaryNode final : BaseNode
+{
+	NodePtr	clone() const override
+	{
+		return (std::make_unique<ImaginaryNode>());
+	}
+	VarType	eval( Context& ) const override
+	{
+		return (Complex(0, 1));
+	}
+};

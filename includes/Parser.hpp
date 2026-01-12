@@ -6,11 +6,11 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:02:56 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 12:35:16 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/12 15:52:11 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Node.hpp"
+#include "Nodes.hpp"
 
 class Parser
 {

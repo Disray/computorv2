@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   computor.hpp                                       :+:      :+:    :+:   */
+/*   RuntimeTypes.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 09:40:35 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:47:27 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/12 15:39:07 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/12 15:43:05 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <vector>
-#include "RuntimeTypes.hpp"
+#include <map>
+#include <string>
+#include <variant>
 
-std::vector<Token>	lexer( const std::string&  );
-void				parse_and_assign( const std::vector<Token>&, Context& );
-void				pre_pass_arity( std::vector<Token>& );
-void				pre_pass_impl_multi( std::vector<Token>& );
+#include "Types/Complex.hpp"
+#include "Types/Matrix.hpp"
+#include "Types/Real.hpp"
+#include "Types/Token.hpp"
+
+using VarType = std::variant<Real, Complex, Matrix>;
+using Context = std::map<std::string, VarType>;

@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Matrix.cpp                                         :+:      :+:    :+:   */
+/*   Matrix.tpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 12:10:48 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/11 17:58:20 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/13 11:56:56 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "computor.hpp"
+#include "Matrix.hpp"
 
-Matrix::Matrix( size_t rows, size_t cols )
+template<real_complex K>
+Matrix<K>::Matrix( size_t rows, size_t cols )
 {
-	this->elements = std::vector<double>((rows * cols), 0.0);
+	this->elements = std::vector<K>((rows * cols), K(0));
 	this->_rows = rows;
 	this->_cols = cols;
 }
 
-Matrix::Matrix( std::initializer_list<std::initializer_list<double>> values )
+template<real_complex K>
+Matrix<K>::Matrix( std::initializer_list<std::initializer_list<K>> values )
 {
 	if (values.size() == 0)
 	{
@@ -40,72 +42,106 @@ Matrix::Matrix( std::initializer_list<std::initializer_list<double>> values )
 		elements.insert(elements.end(), row.begin(), row.end());
 }
 
-Matrix::Matrix( size_t n )
+template<real_complex K>
+Matrix<K>::Matrix( const std::vector<std::vector<K>>& values )
 {
-	this->elements = std::vector<double>(n * n, 0.0);
+	if (values.size() == 0)
+	{
+		_rows = 0;
+		_cols = 0;
+		elements.clear();
+		return ;
+	}
+	_rows = values.size();
+	_cols = values.begin()->size();
+	for (const auto& row : values)
+	{
+		if (row.size() != _cols)
+			throw std::runtime_error("Error: inconsistent row size");
+	}
+	elements.reserve(_rows * _cols);
+	for (const auto& row : values)
+		elements.insert(elements.end(), row.begin(), row.end());
+}
+
+template<real_complex K>
+Matrix<K>::Matrix( size_t n )
+{
+	this->elements = std::vector<K>(n * n, K(0));
 	this->_rows = n;
 	this->_cols = n;
 }
 
-size_t			Matrix::getSize() const
+template<real_complex K>
+size_t			Matrix<K>::getSize() const
 {
 	return (this->_cols * this->_rows);
 }
 
-size_t			Matrix::getRows() const
+template<real_complex K>
+size_t			Matrix<K>::getRows() const
 {
 	return (this->_rows);
 }
 
-size_t			Matrix::getCols() const
+template<real_complex K>
+size_t			Matrix<K>::getCols() const
 {
 	return (this->_cols);
 }
 
-bool			Matrix::empty() const
+template<real_complex K>
+bool			Matrix<K>::empty() const
 {
 	return (elements.empty());
 }
 
-double&			Matrix::at( size_t row, size_t col )
+template<real_complex K>
+K&			Matrix<K>::at( size_t row, size_t col )
 {
 	if (row >= this->_rows || col >= this->_cols)
 		throw std::out_of_range("Matrix::at: index out of range: ");
 	return (elements[row * _cols + col]);
 }
 
-const double&	Matrix::at( size_t row, size_t col ) const
+template<real_complex K>
+const K&	Matrix<K>::at( size_t row, size_t col ) const
 {
 	if (row >= this->_rows || col >= this->_cols)
 		throw std::out_of_range("Matrix::at: index out of range: ");
 	return (elements[row * _cols + col]);
 }
 
-double&			Matrix::operator()( size_t row, size_t col )
+template<real_complex K>
+K&			Matrix<K>::operator()( size_t row, size_t col )
 {
 	return (at(row, col));
 }
 
-const double&	Matrix::operator()( size_t row, size_t col ) const
+template<real_complex K>
+const K&	Matrix<K>::operator()( size_t row, size_t col ) const
 {
 	return (at(row, col));
 }
 
-double&			Matrix::operator[]( size_t index )
+template<real_complex K>
+K&			Matrix<K>::operator[]( size_t index )
 {
 	if (index >= this->getSize())
 		throw std::runtime_error("Error: index out of bound.");
 	return (this->elements[index]);
 }
 
-const double&	Matrix::operator[]( size_t index ) const
+template<real_complex K>
+const K&	Matrix<K>::operator[]( size_t index ) const
 {
 	if (index >= this->getSize())
 		throw std::runtime_error("Error: index out of bound.");
 	return (this->elements[index]);
 }
 
-std::ostream&	operator<<( std::ostream& os, const Matrix& m )
+template<real_complex T>
+std::ostream&	operator<<( std::ostream& os, const Matrix<T>& m )
 {
 	for (size_t i = 0; i < m.elements.size(); i++)
 	{
@@ -120,7 +156,8 @@ std::ostream&	operator<<( std::ostream& os, const Matrix& m )
 	return (os);
 }
 
-void	Matrix::add( const Matrix& m )
+template<real_complex K>
+void	Matrix<K>::add( const Matrix<K>& m )
 {
 	if (m._cols != this->_cols || m._rows != this->_rows)
 		throw std::runtime_error("Error: Matrices must have the same dimensions for addition");
@@ -128,7 +165,8 @@ void	Matrix::add( const Matrix& m )
 		this->elements[i] += m.elements[i];
 }
 
-void	Matrix::sub( const Matrix& m )
+template<real_complex K>
+void	Matrix<K>::sub( const Matrix<K>& m )
 {
 	if (m._cols != this->_cols || m._rows != this->_rows)
 		throw std::runtime_error("Error: Matrices must have the same dimensions for substraction");
@@ -136,14 +174,15 @@ void	Matrix::sub( const Matrix& m )
 		this->elements[i] -= m.elements[i];
 }
 
-void	Matrix::scl( const double& scalar )
+template<real_complex K>
+void	Matrix<K>::scl( const double& scalar )
 {
 	for (size_t i = 0; i < this->getSize(); i++)
 		this->elements[i] *= scalar;
 }
 
-
-Matrix	Matrix::operator+( const Matrix& other ) const
+template<real_complex K>
+Matrix<K>	Matrix<K>::operator+( const Matrix<K>& other ) const
 {
 	Matrix	m = *this;
 
@@ -151,7 +190,8 @@ Matrix	Matrix::operator+( const Matrix& other ) const
 	return (m);
 }
 
-Matrix	Matrix::operator-( const Matrix& other ) const
+template<real_complex K>
+Matrix<K>	Matrix<K>::operator-( const Matrix<K>& other ) const
 {
 	Matrix	m = *this;
 
@@ -159,7 +199,8 @@ Matrix	Matrix::operator-( const Matrix& other ) const
 	return (m);
 }
 
-Matrix	Matrix::operator-() const
+template<real_complex K>
+Matrix<K>	Matrix<K>::operator-() const
 {
 	Matrix m = *this;
 
@@ -167,7 +208,8 @@ Matrix	Matrix::operator-() const
 	return (m);
 }
 
-Matrix	Matrix::operator*( const Matrix& other ) const
+template<real_complex K>
+Matrix<K>	Matrix<K>::operator*( const Matrix& other ) const
 {
 	if (this->_cols != other._rows)
 		throw std::runtime_error("Error: incompatible dimensions for matrix multiplication");
@@ -178,7 +220,7 @@ Matrix	Matrix::operator*( const Matrix& other ) const
 	{
 		for (size_t j = 0; j < other._cols; j++)
 		{
-			double	sum = 0.0;
+			K	sum = K(0);
 			for (size_t k = 0; k < this->_cols; k++)
 				sum += this->at(i, k) * other.at(k, j);
 			result(i, j) = sum;
@@ -187,7 +229,8 @@ Matrix	Matrix::operator*( const Matrix& other ) const
 	return (result);
 }
 
-Matrix	Matrix::operator*( const double& scalar ) const
+template<real_complex K>
+Matrix<K>	Matrix<K>::operator*( const double& scalar ) const
 {
 	Matrix	m = *this;
 
@@ -195,7 +238,8 @@ Matrix	Matrix::operator*( const double& scalar ) const
 	return (m);
 }
 
-Matrix	Matrix::operator*( const Real& scalar ) const
+template<real_complex K>
+Matrix<K>	Matrix<K>::operator*( const Real& scalar ) const
 {
 	Matrix	m = *this;
 

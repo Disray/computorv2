@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 10:28:38 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 14:53:00 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/13 12:12:38 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,12 @@ std::vector<Token>	lexer( const std::string& input )
 		else
 		{
 			if (match_str == "[")
-				type = TokenType::BRACKET_OPEN;
+				type = TokenType::BRACKET_MATRIX_OPEN;
 			else if (match_str == "]")
+				type = TokenType::BRACKET_MATRIX_CLOSE;
+			else if (match_str == "(")
+				type = TokenType::BRACKET_OPEN;
+			else if (match_str == ")")
 				type = TokenType::BRACKET_CLOSE;
 			else if (match_str == ",")
 				type = TokenType::COMMA;

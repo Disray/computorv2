@@ -1,49 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Visitors.cpp                                       :+:      :+:    :+:   */
+/*   BinaryOpVisitor.cpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 16:04:32 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 11:41:39 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/13 11:31:57 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/13 11:34:27 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Visitors.hpp"
-
-VarType	UnaryOpVisitor::operator()( const Real& a ) const
-{
-	switch (value)
-	{
-		case OpKind::ADD: return (a);
-		case OpKind::SUB: return (-a);
-		default:
-			throw std::runtime_error("Unknown unary operator");
-	}
-}
-
-VarType	UnaryOpVisitor::operator()( const Complex& c ) const
-{
-	switch (value)
-	{
-		case OpKind::ADD: return (c);
-		case OpKind::SUB: return (-c);
-		default:
-			throw std::runtime_error("Unknown unary operator");
-	}
-}
-
-VarType	UnaryOpVisitor::operator()( const Matrix& m ) const
-{
-	switch (value)
-	{
-		case OpKind::ADD: return (m);
-		case OpKind::SUB: return (-m);
-		default:
-			throw std::runtime_error("Unknown unary operator");	
-	}
-}
+#include "Visitors/BinaryOpVisitor.hpp"
 
 VarType	BinaryOpVisitor::operator()( const Real& a, const Real& b ) const
 {
@@ -58,7 +25,7 @@ VarType	BinaryOpVisitor::operator()( const Real& a, const Real& b ) const
 	}
 }
 
-VarType BinaryOpVisitor::operator()( const Matrix& a, const Matrix& b ) const
+VarType BinaryOpVisitor::operator()( const Matrix<Real>& a, const Matrix<Real>& b ) const
 {
 	switch (value)
 	{
@@ -72,7 +39,37 @@ VarType BinaryOpVisitor::operator()( const Matrix& a, const Matrix& b ) const
 	}
 }
 
-VarType BinaryOpVisitor::operator()( const Real& scl, const Matrix& m ) const
+VarType BinaryOpVisitor::operator()( const Matrix<Complex>& a, const Matrix<Complex>& b ) const
+{
+	switch (value)
+	{
+		case OpKind::ADD:  return (a + b);
+		case OpKind::SUB:  return (a - b);
+		case OpKind::MULT: return (a * b);
+		case OpKind::DIV:
+			throw std::runtime_error("Matrix division not supported");
+		default:
+			throw std::runtime_error("Unknown operator");
+	}
+}
+
+VarType BinaryOpVisitor::operator()( const Real& scl, const Matrix<Real>& m ) const
+{
+	switch (value)
+	{
+		case OpKind::MULT: return (m * scl);
+		case OpKind::ADD:
+			throw std::runtime_error("Cannot add scalar and matrix");
+		case OpKind::SUB:
+			throw std::runtime_error("Cannot sub scalar and matrix");
+		case OpKind::DIV:
+			throw std::runtime_error("Cannot divide scalar and matrix");
+		default:
+			throw std::runtime_error("Unknown operator");
+	}
+}
+
+VarType BinaryOpVisitor::operator()( const Real& scl, const Matrix<Complex>& m ) const
 {
 	switch (value)
 	{
@@ -132,11 +129,6 @@ VarType BinaryOpVisitor::operator()( const T& a, const U& b ) const
 {	
 	static_cast<void>(a); static_cast<void>(b);
 	throw std::runtime_error("Invalid type operation");
-}
-
-VarType	apply_unary_op( const OpKind& op, const VarType& a )
-{
-	return (std::visit(UnaryOpVisitor{op}, a));
 }
 
 VarType	apply_binary_op( const OpKind& op, const VarType& lhs, const VarType& rhs )

@@ -6,11 +6,35 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:26:21 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 14:51:04 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/13 12:27:33 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parser.hpp"
+
+NodePtr	Parser::parse_matrix()
+{
+	std::vector<std::vector<NodePtr>>	rows;
+
+	do
+	{
+		if (!match(TokenType::BRACKET_MATRIX_OPEN))
+			throw std::runtime_error("Expected '[' to start matrix row");
+
+		std::vector<NodePtr>	row;
+
+		row.push_back(parse_expression());
+		while (match(TokenType::COMMA))
+			row.push_back(parse_expression());
+		if (!match(TokenType::BRACKET_MATRIX_CLOSE))
+			throw std::runtime_error("Expected ']' to close matrix row");
+		rows.push_back(std::move(row));
+	} while (match(TokenType::SEMICOLON));
+	
+	if (!match(TokenType::BRACKET_MATRIX_CLOSE))
+		throw std::runtime_error("Expected ']' to close matrix");
+	return (std::make_unique<MatrixNode>(std::move(rows)));
+}
 
 NodePtr	Parser::parse_primary()
 {
@@ -29,6 +53,8 @@ NodePtr	Parser::parse_primary()
 			throw std::runtime_error("Expected ')'");
 		return (expr);
 	}
+	if (match(TokenType::BRACKET_MATRIX_OPEN))
+		return (parse_matrix());
 	throw std::runtime_error("Unexpected token");
 }
 

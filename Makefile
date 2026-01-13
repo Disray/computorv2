@@ -2,9 +2,9 @@
 #                                   VARIABLES                                  #
 ################################################################################
 
-NAME		:= computor
+NAME		:= computorv2
 CXX			:= c++
-CXXFLAGS	:= -Werror -Wall -Wextra -std=c++20 -MMD -MP -Iincludes -Iincludes/Types -Iincludes/Nodes
+CXXFLAGS	:= -Werror -Wall -Wextra -std=c++20 -MMD -MP -Iincludes -Iincludes/Types -Iincludes/Nodes -Iincludes/Visitors
 
 SRCS_PATH = ./srcs/
 OBJS_PATH = .obj/
@@ -19,12 +19,14 @@ OBJS = $(SRCS:$(SRCS_PATH)%.cpp=$(OBJS_PATH)%.o)
 SRCS_FILES =	main.cpp \
 				Parser.cpp \
 				parse_and_assign.cpp \
-				Visitors.cpp \
 				lexer.cpp \
 				pre_pass.cpp \
-				types/Complex.cpp \
-				types/Matrix.cpp \
-				types/Real.cpp \
+\
+				Types/Complex.cpp \
+				Types/Real.cpp \
+\
+				Visitors/BinaryOpVisitor.cpp \
+				Visitors/UnaryOpVisitor.cpp \
 
 ################################################################################
 #                                    COlORS                                    #

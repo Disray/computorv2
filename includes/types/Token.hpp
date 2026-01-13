@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 14:35:53 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 14:55:43 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/13 12:11:28 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ enum class TokenType
 	IMAGINARY,
 	OPERATOR,
 	BRACKET_OPEN,
+	BRACKET_MATRIX_OPEN,
 	BRACKET_CLOSE,
+	BRACKET_MATRIX_CLOSE,
 	COMMA,
 	SEMICOLON,
 	UNKOWN

@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 10:33:18 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 14:51:44 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/13 12:19:56 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,20 @@ void	pre_pass_arity( std::vector<Token>& tokens )
 
 bool	ends_expression( const Token& token )
 {
-	if (token.type  == TokenType::NUMBER    ||
-		token.type  == TokenType::VARIABLE  || 
-		token.type  == TokenType::IMAGINARY || 
-		token.value == ")")
+	if (token.type == TokenType::NUMBER    ||
+		token.type == TokenType::VARIABLE  || 
+		token.type == TokenType::IMAGINARY || 
+		token.type == TokenType::BRACKET_CLOSE)
 		return (true);
 	return (false);
 }
 
 bool	starts_expression( const Token& token )
 {
-	if (token.type  == TokenType::NUMBER    ||
-		token.type  == TokenType::VARIABLE  ||
-		token.type  == TokenType::IMAGINARY ||
-		token.value == "(")
+	if (token.type == TokenType::NUMBER    ||
+		token.type == TokenType::VARIABLE  ||
+		token.type == TokenType::IMAGINARY ||
+		token.type == TokenType::BRACKET_OPEN)
 		return (true);
 	return (false);
 }

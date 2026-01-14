@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:02:56 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/13 12:21:16 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/14 12:54:58 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ class Parser
 
 		const Token&				peek() const;
 		const Token&				advance();
+		const Token&				consume( TokenType );
 		bool						match( TokenType );
 		bool						match_op( OpKind );
 	

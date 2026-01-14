@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:26:21 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 10:49:08 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:33:39 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,17 @@ NodePtr	Parser::parse_primary()
 	if (match(TokenType::NUMBER))
 		return (std::make_unique<NumberNode>(parse_real_literal(tokens[pos - 1].value)));
 	if (match(TokenType::VARIABLE))
-		return (std::make_unique<VariableNode>(tokens[pos - 1].value));
+	{
+		std::string	name = tokens[pos - 1].value;
+
+		if (match(TokenType::BRACKET_OPEN))
+		{
+			auto	arg = parse_expression();
+			consume(TokenType::BRACKET_CLOSE);
+			return (std::make_unique<FunctionCallNode>(name, std::move(arg)));
+		}
+		return (std::make_unique<VariableNode>(name));
+	}
 	if (match(TokenType::IMAGINARY))
 		return (std::make_unique<ImaginaryNode>());
 		
@@ -124,6 +134,15 @@ const Token&	Parser::advance()
 	return (tokens[pos++]);
 }
 
+const Token&	Parser::consume( TokenType expected )
+{
+	if (pos >= tokens.size())
+		throw std::runtime_error("Unexpected end of input");
+	if (peek().type != expected)
+		throw std::runtime_error("Unexpected token");
+	return (advance());
+}
+
 bool			Parser::match( TokenType type )
 {
 	if (pos < tokens.size() && peek().type == type)
@@ -157,6 +176,9 @@ bool			Parser::match_op( OpKind op )
 
 NodePtr	Parser::parse()
 {
+	std::cout << "\n\n";
+	for (auto& i : tokens)
+		std::cout << i.value << std::endl;
 	auto	ast = parse_expression();
 
 	if (pos < tokens.size())

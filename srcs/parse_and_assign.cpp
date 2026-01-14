@@ -6,31 +6,55 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:13:06 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:13:12 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:53:24 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parser.hpp"
+
+int		find_equal_index( const std::vector<Token>& tokens )
+{
+	for (size_t i = 0; i < tokens.size(); i++)
+	{
+		if (tokens[i].type == TokenType::EQUAL)
+			return (static_cast<int>(i));
+	}
+	return (-1);
+}
 
 void	parse_and_assign( const std::vector<Token>& tokens, Context& ctx )
 {
 	if (tokens.empty())
 		return ;
 
-	std::string			targetVarName = "";
+	std::string			targetName;
+	std::string			paramName;
 	std::vector<Token>	expressionToken;
 	bool				isAssignment = false;
+	bool				isFunctionAssignment = false;
 
-	if (tokens.size() >= 2 && tokens[1].value == "=")
+	int					eq = find_equal_index(tokens);
+	if (eq != -1)
 	{
-		if (tokens[0].type == TokenType::VARIABLE)
+		if (eq == 1 && tokens[0].type == TokenType::VARIABLE)
 		{
-			targetVarName = tokens[0].value;
+			targetName = tokens[0].value;
 			isAssignment = true;
-			expressionToken.assign(tokens.begin() + 2, tokens.end());
+		}
+		else if (eq == 4
+			&& tokens[0].type == TokenType::VARIABLE
+			&& tokens[1].type == TokenType::BRACKET_OPEN
+			&& tokens[2].type == TokenType::VARIABLE
+			&& tokens[3].type == TokenType::BRACKET_CLOSE)
+		{
+			targetName = tokens[0].value;
+			paramName = tokens[2].value;
+			isAssignment = true;
+			isFunctionAssignment = true;
 		}
 		else
-			throw std::runtime_error("Syntax Error: Left side of '=' must be a variable.");	
+			throw std::runtime_error("Syntax Error: Left side of '=' must be a variable.");
+		expressionToken.assign(tokens.begin() + eq + 1, tokens.end());
 	}
 	else
 		expressionToken = tokens;
@@ -41,11 +65,17 @@ void	parse_and_assign( const std::vector<Token>& tokens, Context& ctx )
 
 	if (isAssignment)
 	{
-		ctx[targetVarName] = result;
-		std::cout << targetVarName << " = ";
+		if (isFunctionAssignment && !std::holds_alternative<Polynomial>(result))
+			throw std::runtime_error("Function definition must evaluate to a polynomial");
+		ctx[targetName] = result;
+		if (isFunctionAssignment)
+			std::cout << targetName << "(" << paramName << ") = ";
+		else
+			std::cout << targetName << " = ";
 	}
 	std::visit([](const auto& v)
 	{
 		std::cout << v << std::endl;
 	}, result);
 }
+

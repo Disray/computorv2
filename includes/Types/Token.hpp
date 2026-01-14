@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 14:35:53 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/13 12:11:28 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:41:04 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ enum class TokenType
 	VARIABLE,
 	IMAGINARY,
 	OPERATOR,
+	EQUAL,
 	BRACKET_OPEN,
 	BRACKET_MATRIX_OPEN,
 	BRACKET_CLOSE,

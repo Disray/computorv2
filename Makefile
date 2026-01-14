@@ -24,6 +24,7 @@ SRCS_FILES =	main.cpp \
 \
 				Types/Complex.cpp \
 				Types/Real.cpp \
+				Types/Polynomial.cpp \
 \
 				Visitors/BinaryOpVisitor.cpp \
 				Visitors/UnaryOpVisitor.cpp \
@@ -34,6 +35,7 @@ SRCS_FILES =	main.cpp \
 				Nodes/ImaginaryNode.cpp \
 				Nodes/VariableNode.cpp \
 				Nodes/NumberNode.cpp \
+				Nodes/FunctionCallNode.cpp \
 
 ################################################################################
 #                                    COlORS                                    #

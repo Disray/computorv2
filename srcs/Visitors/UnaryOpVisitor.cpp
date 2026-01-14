@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 11:32:54 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/13 11:33:21 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:18:33 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,11 @@ VarType	UnaryOpVisitor::operator()( const Matrix<Complex>& m ) const
 		default:
 			throw std::runtime_error("Unknown unary operator");	
 	}
+}
+
+VarType	UnaryOpVisitor::operator()( const Polynomial& ) const
+{
+	throw std::runtime_error("Invalid unary operator");
 }
 
 VarType	apply_unary_op( const OpKind& op, const VarType& a )

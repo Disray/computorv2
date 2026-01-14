@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 10:33:18 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/13 12:19:56 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/14 15:31:20 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,10 @@ void	pre_pass_impl_multi( std::vector<Token>& tokens )
 
 	while (i + 1 < tokens.size())
 	{
-		if (ends_expression(tokens[i]) && starts_expression(tokens[i + 1]))
+		if (ends_expression(tokens[i])              &&
+			starts_expression(tokens[i + 1])        &&
+			!(tokens[i].type == TokenType::VARIABLE &&
+			tokens[i + 1].type == TokenType::BRACKET_OPEN))
 		{
 			tokens.insert(tokens.begin() + (i + 1), Token("*", TokenType::OPERATOR, Arity::BINARY));
 			i++;

@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UnaryOpVisitor.hpp                                 :+:      :+:    :+:   */
+/*   FunctionCallNode.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 11:28:48 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 15:16:53 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/14 12:57:22 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/14 14:13:06 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "RuntimeTypes.hpp"
+#include "BaseNode.hpp"
 
-struct UnaryOpVisitor
+class FunctionCallNode : public BaseNode
 {
-	OpKind	value;
+	private:
+		std::string	name;
+		NodePtr		arg;
 
-	VarType	operator()( const Real& )    const;
-	VarType	operator()( const Complex& ) const;
-	VarType	operator()( const Matrix<Real>& )  const;
-	VarType	operator()( const Matrix<Complex>& )  const;
-	VarType	operator()( const Polynomial& ) const;
+	public:
+		FunctionCallNode( std::string, NodePtr );
+
+		NodePtr	clone() const override;
+		VarType	eval( Context& ) const override;
 };

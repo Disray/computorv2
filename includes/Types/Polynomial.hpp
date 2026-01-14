@@ -1,26 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   UnaryOpVisitor.hpp                                 :+:      :+:    :+:   */
+/*   Polynomial.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/13 11:28:48 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 15:16:53 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/14 14:28:00 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/14 15:06:45 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "RuntimeTypes.hpp"
+#include "Real.hpp"
+#include "Complex.hpp"
+#include <vector>
 
-struct UnaryOpVisitor
+class Polynomial
 {
-	OpKind	value;
+	private:
+		Real	a;
+		Real	b;
+		Real	c;
 
-	VarType	operator()( const Real& )    const;
-	VarType	operator()( const Complex& ) const;
-	VarType	operator()( const Matrix<Real>& )  const;
-	VarType	operator()( const Matrix<Complex>& )  const;
-	VarType	operator()( const Polynomial& ) const;
+	public:
+		Polynomial();
+		Polynomial( Real, Real, Real );
+
+		int		degree() const;
+		Real	eval( const Real& ) const;
+		Complex	eval( const Complex& ) const;
+
+		std::vector<Real>	solve() const;
+		
+		friend std::ostream&	operator<<( std::ostream&, Polynomial );
 };

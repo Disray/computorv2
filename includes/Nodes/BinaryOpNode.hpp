@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:23:47 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:52:23 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/14 10:30:10 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,15 @@
 #include "BaseNode.hpp"
 #include "Visitors.hpp"
 
-struct BinaryOpNode final : BaseNode
+class BinaryOpNode : public BaseNode
 {
-	OpKind	op;
-	NodePtr	left, right;
+	private:
+		OpKind	op;
+		NodePtr	left, right;
 
-	explicit BinaryOpNode( OpKind v, NodePtr l, NodePtr r ) : op(v), left(std::move(l)), right(std::move(r)) {}
-	
-	NodePtr	clone() const override
-	{
-		return (std::make_unique<BinaryOpNode>(op, left->clone(), right->clone()));
-	}
-	VarType	eval( Context& ctx ) const override
-	{
-		VarType	lhs = left->eval(ctx);
-		VarType	rhs = right->eval(ctx);
-
-		return (apply_binary_op(op, lhs, rhs));
-	}
+	public:
+		BinaryOpNode( OpKind, NodePtr, NodePtr );
+		
+		NodePtr	clone() const override;
+		VarType	eval( Context& ) const override;
 };

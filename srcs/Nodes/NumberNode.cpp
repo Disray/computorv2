@@ -1,21 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ImaginaryNode.hpp                                  :+:      :+:    :+:   */
+/*   NumberNode.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/12 15:25:50 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 10:53:39 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/14 10:42:23 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/14 10:50:53 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "NumberNode.hpp"
 
-#include "BaseNode.hpp"
+NumberNode::NumberNode( Real v ) : value(v) {}
 
-class ImaginaryNode : public BaseNode
+NodePtr	NumberNode::clone() const
 {
-	NodePtr	clone() const override;
-	VarType	eval( Context& ) const override;
-};
+	return (std::make_unique<NumberNode>(value));
+}
+
+VarType	NumberNode::eval( Context& ) const
+{
+	return (value);
+}

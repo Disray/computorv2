@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ImaginaryNode.hpp                                  :+:      :+:    :+:   */
+/*   UnaryOpNode.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/12 15:25:50 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 10:53:39 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/14 10:33:07 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/14 10:50:55 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "UnaryOpNode.hpp"
 
-#include "BaseNode.hpp"
+UnaryOpNode::UnaryOpNode( OpKind v, NodePtr c ) : op(v), child(std::move(c)) {}
 
-class ImaginaryNode : public BaseNode
+NodePtr	UnaryOpNode::clone() const
 {
-	NodePtr	clone() const override;
-	VarType	eval( Context& ) const override;
-};
+	return (std::make_unique<UnaryOpNode>(op, child->clone()));
+}
+
+VarType	UnaryOpNode::eval( Context& ctx ) const
+{
+	VarType	value = child->eval(ctx);
+
+	return (apply_unary_op(op, value));
+}

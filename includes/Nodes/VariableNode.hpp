@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:25:19 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:36:25 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/14 10:51:03 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,14 @@
 
 #include "BaseNode.hpp"
 
-struct VariableNode final : BaseNode
+class VariableNode : public BaseNode
 {
-	std::string	name;
+	private:
+		std::string	name;
 	
-	explicit VariableNode( std::string n ) : name(std::move(n)) {}
+	public:
+		explicit VariableNode( std::string );
 
-	NodePtr	clone() const override
-	{
-		return (std::make_unique<VariableNode>(name));
-	}
-	VarType	eval( Context& ctx ) const override
-	{
-		if (!ctx.contains(name))
-			throw std::runtime_error("Undefined variable: " + name);
-
-		return (ctx.at(name));
-	}
+		NodePtr	clone() const override;
+		VarType	eval( Context& ) const override;
 };

@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ImaginaryNode.hpp                                  :+:      :+:    :+:   */
+/*   VariableNode.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/12 15:25:50 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 10:53:39 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/14 10:39:58 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/14 10:50:56 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "VariableNode.hpp"
 
-#include "BaseNode.hpp"
+VariableNode::VariableNode( std::string n ) : name(std::move(n)) {}
 
-class ImaginaryNode : public BaseNode
+NodePtr	VariableNode::clone() const
 {
-	NodePtr	clone() const override;
-	VarType	eval( Context& ) const override;
-};
+	return (std::make_unique<VariableNode>(name));
+}
+
+VarType	VariableNode::eval( Context& ctx ) const
+{
+	if (!ctx.contains(name))
+		throw std::runtime_error("Undefined variable: " + name);
+
+	return (ctx.at(name));
+}

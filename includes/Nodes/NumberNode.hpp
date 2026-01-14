@@ -6,26 +6,23 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:22:58 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/12 15:36:19 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/14 10:50:45 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include "BaseNode.hpp"
+#include "Types/Real.hpp"
 
-struct NumberNode final : BaseNode
+class NumberNode : public BaseNode
 {
-	double	value;
+	private:
+		Real	value;
 
-	explicit NumberNode( double v ) : value(v) {}
+	public:
+		explicit NumberNode( Real );
 
-	NodePtr	clone() const override
-	{
-		return (std::make_unique<NumberNode>(value));
-	}
-	VarType	eval( Context& ) const override
-	{
-		return (Real(value));
-	}
+		NodePtr	clone() const override;
+		VarType	eval( Context& ) const override;
 };

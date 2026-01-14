@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ImaginaryNode.hpp                                  :+:      :+:    :+:   */
+/*   ImaginaryNode.cpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/12 15:25:50 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 10:53:39 by rrichard         ###   ########.fr       */
+/*   Created: 2026/01/14 10:52:45 by rrichard          #+#    #+#             */
+/*   Updated: 2026/01/14 10:53:18 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#include "ImaginaryNode.hpp"
 
-#include "BaseNode.hpp"
-
-class ImaginaryNode : public BaseNode
+NodePtr	ImaginaryNode::clone() const
 {
-	NodePtr	clone() const override;
-	VarType	eval( Context& ) const override;
-};
+	return (std::make_unique<ImaginaryNode>());
+}
+
+VarType	ImaginaryNode::eval( Context& ) const
+{
+	return (Complex(0, 1));
+}

@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:26:21 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/13 12:27:33 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/14 10:49:08 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,29 @@ NodePtr	Parser::parse_matrix()
 	return (std::make_unique<MatrixNode>(std::move(rows)));
 }
 
+Real	parse_real_literal( const std::string& s )
+{
+	size_t	idx = 0;
+	double	v = 0.;
+
+	try
+	{
+		v = std::stod(s, &idx);
+	}
+	catch(const std::exception& e)
+	{
+		throw std::runtime_error("Invalid number literal: " + s);
+	}
+	if (idx != s.size())
+		throw std::runtime_error("Invalid number literal: " + s);
+	return (Real(v));
+	
+}
+
 NodePtr	Parser::parse_primary()
 {
 	if (match(TokenType::NUMBER))
-		return (std::make_unique<NumberNode>(std::stod(tokens[pos - 1].value)));
+		return (std::make_unique<NumberNode>(parse_real_literal(tokens[pos - 1].value)));
 	if (match(TokenType::VARIABLE))
 		return (std::make_unique<VariableNode>(tokens[pos - 1].value));
 	if (match(TokenType::IMAGINARY))

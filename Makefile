@@ -27,6 +27,13 @@ SRCS_FILES =	main.cpp \
 \
 				Visitors/BinaryOpVisitor.cpp \
 				Visitors/UnaryOpVisitor.cpp \
+\
+				Nodes/BinaryOpNode.cpp \
+				Nodes/UnaryOpNode.cpp \
+				Nodes/MatrixNode.cpp \
+				Nodes/ImaginaryNode.cpp \
+				Nodes/VariableNode.cpp \
+				Nodes/NumberNode.cpp \
 
 ################################################################################
 #                                    COlORS                                    #

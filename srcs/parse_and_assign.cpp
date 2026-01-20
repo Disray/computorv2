@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:13:06 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 15:53:24 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/17 09:05:58 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,12 @@ void	parse_and_assign( const std::vector<Token>& tokens, Context& ctx )
 
 	Parser	parser(expressionToken);
 	NodePtr	ast = parser.parse();
-	VarType	result = ast->eval(ctx);
+	Context	evalCtx = ctx;
+
+	if (isFunctionAssignment)
+		evalCtx[paramName] = Polynomial(Real(0.), Real(1.), Real(0.));
+
+	VarType	result = ast->eval(evalCtx);
 
 	if (isAssignment)
 	{

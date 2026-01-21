@@ -6,11 +6,11 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:39:01 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 14:23:29 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/21 15:24:40 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "computor.hpp"
+#include "Types/Complex.hpp"
 
 Complex::Complex() : real(0.0), imag(0.0) {}
 
@@ -137,18 +137,18 @@ std::ostream&	operator<<( std::ostream& os, const Complex& z )
 
 	auto near = [&](double x, double target)
 	{
-		return (std::abs(x - target) < eps);
+		return (maths::abs(x - target) < eps);
 	};
 
 	double	re = z.real;
 	double	im = z.imag;
 
-	if (std::abs(im) < eps)
+	if (maths::abs(im) < eps)
 	{
 		os << re;
 		return (os);
 	}
-	if (std::abs(re) < eps)
+	if (maths::abs(re) < eps)
 	{
 		if (near(im, 1))
 			os << "i";

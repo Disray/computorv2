@@ -6,11 +6,12 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:13:06 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/17 09:05:58 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/21 18:08:00 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parser.hpp"
+#include <type_traits>
 
 int		find_equal_index( const std::vector<Token>& tokens )
 {
@@ -64,7 +65,7 @@ void	parse_and_assign( const std::vector<Token>& tokens, Context& ctx )
 	Context	evalCtx = ctx;
 
 	if (isFunctionAssignment)
-		evalCtx[paramName] = Polynomial(Real(0.), Real(1.), Real(0.));
+		evalCtx[paramName] = Polynomial({0., 1.});
 
 	VarType	result = ast->eval(evalCtx);
 
@@ -78,9 +79,20 @@ void	parse_and_assign( const std::vector<Token>& tokens, Context& ctx )
 		else
 			std::cout << targetName << " = ";
 	}
-	std::visit([](const auto& v)
+	std::visit([&paramName, isFunctionAssignment](const auto& v)
 	{
-		std::cout << v << std::endl;
+		using T	= std::decay_t<decltype(v)>;
+
+		if constexpr (std::is_same_v<T, Polynomial>)
+		{
+			std::string pVar = (isFunctionAssignment && !paramName.empty()) ? paramName : "x";
+
+			std::cout << v.print(pVar) << std::endl;
+		}
+		else
+		{
+			std::cout << v << std::endl;
+		}
 	}, result);
 }
 

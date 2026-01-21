@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 11:31:57 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/13 11:34:27 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/21 16:55:46 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,46 @@ VarType	BinaryOpVisitor::operator()( const Complex& z1, const Complex& z2 ) cons
 		case OpKind::DIV:  return (z1 / z2);
 		default:
 			throw std::runtime_error("Unknown operator");
+	}
+}
+
+VarType	BinaryOpVisitor::operator()( const Polynomial& p1, const Polynomial& p2 ) const
+{
+	switch (value)
+	{
+		case OpKind::ADD:  return (p1 + p2);
+		case OpKind::SUB:  return (p1 - p2);
+		case OpKind::MULT: return (p1 * p2);
+		case OpKind::DIV:
+			std::runtime_error("Polynomial division not yet implemented");
+		default:
+			throw std::runtime_error("Unkown operator");
+	}
+}
+
+VarType	BinaryOpVisitor::operator()( const Real& x, const Polynomial& p ) const
+{
+	switch (value)
+	{
+		case OpKind::ADD:  return (x + p);
+		case OpKind::SUB:  return (x - p);
+		case OpKind::MULT: return (x * p);
+		case OpKind::DIV:  return (x / p);
+		default:
+			throw std::runtime_error("Unkown operator");
+	}
+}
+
+VarType	BinaryOpVisitor::operator()( const Polynomial& x, const Real& p ) const
+{
+	switch (value)
+	{
+		case OpKind::ADD:  return (p + x);
+		case OpKind::SUB:  return (p - x);
+		case OpKind::MULT: return (p * x);
+		case OpKind::DIV:  return (p / x);
+		default:
+			throw std::runtime_error("Unkown operator");
 	}
 }
 

@@ -6,15 +6,15 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 18:27:58 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 11:47:46 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/21 15:25:38 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <iostream>
-
-class Real;
+#include "Maths.hpp"
+#include "Types/Real.hpp"
 
 class Complex
 {

@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:13:06 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/21 18:08:00 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/26 19:15:11 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	parse_and_assign( const std::vector<Token>& tokens, Context& ctx )
 	}
 	std::visit([&paramName, isFunctionAssignment](const auto& v)
 	{
-		using T	= std::decay_t<decltype(v)>;
+		using T	= std::remove_cvref_t<decltype(v)>;
 
 		if constexpr (std::is_same_v<T, Polynomial>)
 		{

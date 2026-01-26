@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:32:50 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/21 18:11:29 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/26 20:09:20 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ std::ostream&	operator<<( std::ostream& os, const PolyPrint& p )
 
 	bool	printed_any = false;
 
-	for (size_t i = coeffs.size() - 1; i-- > 0;)
+	for (size_t i = coeffs.size(); i-- > 0;)
 	{
 		Real coeff = coeffs[i];
 

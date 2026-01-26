@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:26:21 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 15:33:39 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/26 19:10:49 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,9 +176,6 @@ bool			Parser::match_op( OpKind op )
 
 NodePtr	Parser::parse()
 {
-	std::cout << "\n\n";
-	for (auto& i : tokens)
-		std::cout << i.value << std::endl;
 	auto	ast = parse_expression();
 
 	if (pos < tokens.size())

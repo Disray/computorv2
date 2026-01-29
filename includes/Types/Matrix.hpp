@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:28:09 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/13 11:56:44 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:12:21 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,11 @@ class Matrix
 
 		void					add( const Matrix& m );
 		void					sub( const Matrix& m );
-		void					scl( const double& scalar );
+		void					scl( const Real& scalar );
 		Matrix					operator+( const Matrix& ) const;
 		Matrix					operator-( const Matrix& ) const;
 		Matrix					operator-() const;
 		Matrix					operator*( const Matrix& ) const;
-		Matrix					operator*( const double& scalar ) const;
 		Matrix					operator*( const Real& scalar ) const;
 };
 

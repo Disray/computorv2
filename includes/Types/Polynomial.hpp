@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:28:00 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/21 18:11:12 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/28 10:51:10 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ class Polynomial
 		int							degree() const;
 		Real						eval( const Real& ) const;
 		Complex						eval( const Complex& ) const;
+		Polynomial					eval( const Polynomial& ) const;
 		std::vector<Real>			solve() const;
 		void						trim();
 		constexpr bool				empty() const noexcept;

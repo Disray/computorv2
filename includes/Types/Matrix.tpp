@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 12:10:48 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/13 11:56:56 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:11:45 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,7 @@ void	Matrix<K>::sub( const Matrix<K>& m )
 }
 
 template<real_complex K>
-void	Matrix<K>::scl( const double& scalar )
+void	Matrix<K>::scl( const Real& scalar )
 {
 	for (size_t i = 0; i < this->getSize(); i++)
 		this->elements[i] *= scalar;
@@ -229,14 +229,14 @@ Matrix<K>	Matrix<K>::operator*( const Matrix& other ) const
 	return (result);
 }
 
-template<real_complex K>
-Matrix<K>	Matrix<K>::operator*( const double& scalar ) const
-{
-	Matrix	m = *this;
+// template<real_complex K>
+// Matrix<K>	Matrix<K>::operator*( const double& scalar ) const
+// {
+// 	Matrix	m = *this;
 
-	m.scl(scalar);
-	return (m);
-}
+// 	m.scl(scalar);
+// 	return (m);
+// }
 
 template<real_complex K>
 Matrix<K>	Matrix<K>::operator*( const Real& scalar ) const

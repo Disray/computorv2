@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:03:10 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/09 12:47:52 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/27 19:02:19 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,29 @@ std::ostream&	operator<<( std::ostream& os, const Real& r )
 {
 	os << r.real;
 	return (os);
+}
+
+bool	Real::operator>( const Real& other ) const noexcept
+{
+	return (this->real > other.real);
+}
+
+bool	Real::operator<( const Real& other ) const noexcept
+{
+	return (this->real < other.real);
+}
+
+bool	Real::operator>=( const Real& other ) const noexcept
+{
+	return (this->real >= other.real);
+}
+
+bool	Real::operator<=( const Real& other ) const noexcept
+{
+	return (this->real <= other.real);
+}
+
+bool	Real::operator!=( const Real& other ) const noexcept
+{
+	return (this->real != other.real);
 }

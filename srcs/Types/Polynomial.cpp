@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:32:50 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/26 20:09:20 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/01/28 20:54:11 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,21 @@ Complex Polynomial::eval( const Complex& z ) const
 	if (empty())
 		return (Complex(0.));
 
-	Complex	result(coeffs.back().getReal()); // NEED CONSTRUCTOR FOR Complex(Real)
+	Complex	result(coeffs.back());
 
 	for (size_t i = coeffs.size() - 1; i-- > 0;)
 		result = (result * z) + coeffs[i];
+	return (result);
+}
+
+Polynomial	Polynomial::eval( const Polynomial& other ) const
+{
+	if (coeffs.empty()) return (Polynomial(0));
+	
+	Polynomial	result(coeffs.back());
+
+	for (size_t i = coeffs.size() - 1; i-- > 0;)
+		result = (result * other) + coeffs[i];
 	return (result);
 }
 

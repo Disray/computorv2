@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:03:10 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/27 19:02:19 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:38:42 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,26 @@ Real	Real::operator/( const Real& other ) const
 
 	r.real = this->real / other.real;
 	return (r);
+}
+
+Real	Real::operator%( const Real& other ) const
+{
+	if (other == 0)
+		throw std::runtime_error("Error: cannot modulo by zero");
+
+	long	quotient = static_cast<long>(*this / other);
+
+	return (*this - static_cast<Real>(quotient) * other);
+}
+
+Real::operator long() const
+{
+	return (static_cast<long>(this->real));
+}
+
+Real::operator int() const
+{
+	return (static_cast<int>(this->real));
 }
 
 Real	Real::operator-() const noexcept

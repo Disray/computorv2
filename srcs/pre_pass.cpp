@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 10:33:18 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 15:31:20 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/02 11:47:07 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,18 @@ void	pre_pass_arity( std::vector<Token>& tokens )
 			expects_operands = false;
 			continue;
 		}
+		if (token.type == TokenType::BRACKET_OPEN)
+		{
+			expects_operands = true;
+			continue;
+		}
+		if (token.type == TokenType::BRACKET_CLOSE)
+		{
+			expects_operands = false;
+			continue;
+		}
 		if (token.type == TokenType::OPERATOR)
 		{
-			if (token.value == "(")
-			{
-				expects_operands = true;
-				continue;
-			}
-			if (token.value == ")")
-			{
-				expects_operands = false;
-				continue;
-			}
 			token.arity = expects_operands ? Arity::UNARY : Arity::BINARY;
 			expects_operands = true;
 		}
@@ -72,7 +72,7 @@ void	pre_pass_impl_multi( std::vector<Token>& tokens )
 			!(tokens[i].type == TokenType::VARIABLE &&
 			tokens[i + 1].type == TokenType::BRACKET_OPEN))
 		{
-			tokens.insert(tokens.begin() + (i + 1), Token("*", TokenType::OPERATOR, Arity::BINARY));
+			tokens.insert(tokens.begin() + (i + 1), Token("*", TokenType::OPERATOR, Arity::BINARY, OpKind::MUL));
 			i++;
 		}
 		else

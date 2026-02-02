@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:32:50 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/28 20:54:11 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:34:49 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,10 +300,57 @@ Polynomial	operator/( const Real& x, const Polynomial& p )
 	return (p / x);
 }
 
-// Polynomial	Polynomial::operator/( const Polynomial& p ) const
-// {
-	
-// }
+std::pair<Polynomial, Polynomial>	Polynomial::euclidean_div( const Polynomial& b ) const
+{
+	if (b.getCoeffs().empty())
+		throw std::runtime_error("Error: division by zero polynomial");
+
+	Polynomial	quotient;
+	Polynomial	remainder = *this;
+
+	while (!remainder.coeffs.empty() && remainder.degree() >= b.degree())
+	{
+		size_t	deg_diff = remainder.degree() - b.degree();
+		Real	coef_ratio = remainder.coeffs.back() / b.coeffs.back();
+
+		Polynomial	term;
+		term.coeffs.resize(deg_diff + 1, 0);
+		term.coeffs.back() = coef_ratio;
+
+		quotient = quotient + term;
+
+		Polynomial	to_substract = b * term;
+		remainder = remainder - to_substract;
+	}
+	return {quotient, remainder};
+}
+
+Polynomial	Polynomial::pow( int exp ) const
+{
+	if (exp < 0)
+		throw std::runtime_error("Negative exponent for polynomials not supported");
+	Polynomial	res(Real(1));
+	Polynomial	base = *this;
+
+	while (exp > 0)
+	{
+		if (exp % 2 == 1)
+			res = res * base;
+		base = base * base;
+		exp /= 2;
+	}
+	return (res);
+}
+
+Polynomial	Polynomial::operator%( const Polynomial& b ) const
+{
+	return (euclidean_div(b).second);
+}
+
+Polynomial	Polynomial::operator/( const Polynomial& b ) const
+{
+	return (euclidean_div(b).first);
+}
 
 // Polynomial&	Polynomial::operator/=( const Polynomial& p )
 // {

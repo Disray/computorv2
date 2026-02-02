@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:26:21 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/26 19:10:49 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/02 12:03:13 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,22 +87,34 @@ NodePtr	Parser::parse_primary()
 	throw std::runtime_error("Unexpected token");
 }
 
+NodePtr	Parser::parse_power()
+{
+	auto	left = parse_primary();
+
+	if (match_op(OpKind::POW))
+	{
+		auto	right = parse_factor();
+		return (std::make_unique<BinaryOpNode>(OpKind::POW, std::move(left), std::move(right)));
+	}
+	return (left);
+}
+
 NodePtr	Parser::parse_factor()
 {
 	if (match_op(OpKind::ADD))
 		return (parse_factor());
 	if (match_op(OpKind::SUB))
 		return (std::make_unique<UnaryOpNode>(OpKind::SUB, parse_factor()));
-	return (parse_primary());
+	return (parse_power());
 }
 
 NodePtr	Parser::parse_term()
 {
 	auto	left = parse_factor();
 
-	while (match_op(OpKind::MULT) || match_op(OpKind::DIV))
+	while (match_op(OpKind::MUL) || match_op(OpKind::DIV) || match_op(OpKind::MOD))
 	{
-		OpKind	op = tokens[pos - 1].value == "*" ? OpKind::MULT : OpKind::DIV;
+		OpKind	op = tokens[pos - 1].op;
 		auto	right = parse_factor();
 
 		left = std::make_unique<BinaryOpNode>(op, std::move(left), std::move(right));
@@ -116,7 +128,7 @@ NodePtr	Parser::parse_expression()
 
 	while (match_op(OpKind::ADD) || match_op(OpKind::SUB))
 	{
-		OpKind	op = tokens[pos - 1].value == "+" ? OpKind::ADD : OpKind::SUB;
+		OpKind	op = tokens[pos - 1].op;
 		auto	right = parse_term();
 
 		left = std::make_unique<BinaryOpNode>(op, std::move(left), std::move(right));
@@ -163,10 +175,7 @@ bool			Parser::match_op( OpKind op )
 	if (t.type != TokenType::OPERATOR)
 		return (false);
 	
-	if ((op == OpKind::ADD  && t.value == "+") ||
-		(op == OpKind::SUB  && t.value == "-" )||
-		(op == OpKind::MULT && t.value == "*") ||
-		(op == OpKind::DIV  && t.value == "/"))
+	if (t.op == op)
 	{
 		advance();
 		return (true);

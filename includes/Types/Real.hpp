@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 15:57:52 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/27 18:28:47 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:38:10 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,10 @@ class Real
 		bool					operator<=( const Real& ) const noexcept;
 		bool					operator>=( const Real& ) const noexcept;
 		bool					operator!=( const Real& ) const noexcept;
-		
+		Real					operator%( const Real& ) const;
 
-		
+		explicit				operator long() const;
+		explicit				operator int() const;
 		friend std::ostream&	operator<<( std::ostream&, const Real& );
 
 		double					getReal() const;

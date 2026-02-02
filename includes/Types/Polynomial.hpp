@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:28:00 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/28 10:51:10 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/02 16:33:00 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class Polynomial
 	private:
 		std::vector<Real>	coeffs;
 
+		std::pair<Polynomial, Polynomial>	euclidean_div( const Polynomial& b ) const;
 	public:
 		Polynomial() = default;
 		Polynomial( std::initializer_list<Real> );
@@ -47,6 +48,7 @@ class Polynomial
 		constexpr bool				empty() const noexcept;
 		PolyPrint					print( const std::string& varName = "x" ) const;
 		const std::vector<Real>&	getCoeffs() const;
+		Polynomial					pow( int ) const;
 		
 		friend std::ostream&	operator<<( std::ostream&, const Polynomial& );
 
@@ -63,12 +65,14 @@ class Polynomial
 		Polynomial&	operator*=( const Polynomial& ) noexcept;
 		Polynomial&	operator*=( const Real& ) noexcept;
 		
-		Polynomial	operator/( const Polynomial& ) const noexcept;
-		Polynomial&	operator/=( const Polynomial& ) noexcept;
+		Polynomial	operator/( const Polynomial& ) const;
+		Polynomial&	operator/=( const Polynomial& );
 		Polynomial&	operator/=( const Real& );
 		
 		Polynomial&	operator=( const Polynomial& ) = default;
 		bool		operator==( const Polynomial& ) const noexcept;
+		
+		Polynomial	operator%( const Polynomial& ) const;
 };
 
 Polynomial	operator+( const Polynomial&, const Real& );

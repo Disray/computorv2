@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:02:56 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 12:54:58 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/02 12:00:26 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ class Parser
 		NodePtr						parse_expression();
 		NodePtr						parse_term();
 		NodePtr						parse_factor();
+		NodePtr						parse_power();
 		NodePtr						parse_primary();
 
 		const Token&				peek() const;

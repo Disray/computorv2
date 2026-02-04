@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 12:10:48 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/27 19:11:45 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/04 10:59:50 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,32 +211,16 @@ Matrix<K>	Matrix<K>::operator-() const
 template<real_complex K>
 Matrix<K>	Matrix<K>::operator*( const Matrix& other ) const
 {
-	if (this->_cols != other._rows)
-		throw std::runtime_error("Error: incompatible dimensions for matrix multiplication");
+	if (this->_cols != other._cols && this->_rows != other._rows)
+		throw std::runtime_error("Error: dimensions must be identital for element-wise multiplication");
 
-	Matrix	result(this->_rows, other._cols);
+	Matrix	result(this->_rows, this->_cols);
 	
 	for (size_t i = 0; i < this->_rows; i++)
-	{
-		for (size_t j = 0; j < other._cols; j++)
-		{
-			K	sum = K(0);
-			for (size_t k = 0; k < this->_cols; k++)
-				sum += this->at(i, k) * other.at(k, j);
-			result(i, j) = sum;
-		}
-	}
+		for (size_t j = 0; j < this->_cols; j++)
+			result(i, j) = at(i, j) * other(i, j);
 	return (result);
 }
-
-// template<real_complex K>
-// Matrix<K>	Matrix<K>::operator*( const double& scalar ) const
-// {
-// 	Matrix	m = *this;
-
-// 	m.scl(scalar);
-// 	return (m);
-// }
 
 template<real_complex K>
 Matrix<K>	Matrix<K>::operator*( const Real& scalar ) const
@@ -245,4 +229,26 @@ Matrix<K>	Matrix<K>::operator*( const Real& scalar ) const
 
 	m.scl(scalar.getReal());
 	return (m);
+}
+
+template<real_complex K>
+Matrix<K>	Matrix<K>::mul_mat( const Matrix<K>& mat ) const
+{
+	if (this->_cols != mat.getRows())
+		throw std::runtime_error("Error: wrong dimensions for matrix multiplication");
+		
+	Matrix<K>	result(this->_rows, this->_cols);
+
+	for (size_t i = 0; i < this->_rows; i++)
+	{
+		for (size_t j = 0; j < mat.getCols(); j++)
+		{
+			K sum = K(0);
+
+			for (size_t h = 0; h < mat.getRows(); h++)
+					sum += this->at(i, h) * mat(h, j);
+			result(i, j) = sum;
+		}
+	}
+	return (result);
 }

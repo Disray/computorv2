@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 12:26:21 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/02 12:03:13 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/04 10:47:14 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ NodePtr	Parser::parse_term()
 {
 	auto	left = parse_factor();
 
-	while (match_op(OpKind::MUL) || match_op(OpKind::DIV) || match_op(OpKind::MOD))
+	while (match_op(OpKind::MUL) || match_op(OpKind::DIV) || match_op(OpKind::MOD) || match_op(OpKind::MUL_MAT))
 	{
 		OpKind	op = tokens[pos - 1].op;
 		auto	right = parse_factor();

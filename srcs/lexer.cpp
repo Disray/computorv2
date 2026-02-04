@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/09 10:28:38 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/02 16:43:21 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/02 20:11:30 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 
 std::vector<Token>	lexer( const std::string& input )
 {
-	const std::regex 	pattern("([0-9]+(\\.[0-9]+)?)|([a-zA-Z][a-zA-Z0-9_]*)|([\\+\\-\\*\\/%\\^\\(\\)=])|([\\[\\]\\,\\;])");
+	const std::regex 	pattern("([0-9]+(\\.[0-9]+)?)|([a-zA-Z][a-zA-Z0-9_]*)|(\\*\\*|[\\+\\-\\*\\/%\\^\\(\\)=])|([\\[\\]\\,\\;])");
 	auto				words_begin = std::sregex_iterator(input.begin(), input.end(), pattern);
 	auto				words_end	= std::sregex_iterator();
 	std::vector<Token>	tokens;
@@ -60,6 +60,8 @@ std::vector<Token>	lexer( const std::string& input )
 					op = OpKind::ADD;
 				else if (match_str == "-")
 					op = OpKind::SUB;
+				else if (match_str == "**")
+					op = OpKind::MUL_MAT;
 				else if (match_str == "*")
 					op = OpKind::MUL;
 				else if (match_str == "/")

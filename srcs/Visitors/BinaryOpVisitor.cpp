@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/13 11:31:57 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/02 20:13:13 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/04 11:04:55 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,39 @@ VarType BinaryOpVisitor::operator()( const Real& scl, const Matrix<Real>& m ) co
 	}
 }
 
+VarType BinaryOpVisitor::operator()( const Matrix<Real>& m, const Real& scl ) const
+{
+	switch (value)
+	{
+		case OpKind::MUL: return (m * scl);
+		case OpKind::ADD:
+			throw std::runtime_error("Cannot add scalar and matrix");
+		case OpKind::SUB:
+			throw std::runtime_error("Cannot sub scalar and matrix");
+		case OpKind::DIV:
+			throw std::runtime_error("Cannot divide scalar and matrix");
+		default:
+			throw std::runtime_error("Unknown operator");
+	}
+}
+
 VarType BinaryOpVisitor::operator()( const Real& scl, const Matrix<Complex>& m ) const
+{
+	switch (value)
+	{
+		case OpKind::MUL: return (m * scl);
+		case OpKind::ADD:
+			throw std::runtime_error("Cannot add scalar and matrix");
+		case OpKind::SUB:
+			throw std::runtime_error("Cannot sub scalar and matrix");
+		case OpKind::DIV:
+			throw std::runtime_error("Cannot divide scalar and matrix");
+		default:
+			throw std::runtime_error("Unknown operator");
+	}
+}
+
+VarType BinaryOpVisitor::operator()( const Matrix<Complex>& m, const Real& scl ) const
 {
 	switch (value)
 	{

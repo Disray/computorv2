@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 12:10:48 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/04 10:59:50 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/04 11:02:46 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,7 +227,7 @@ Matrix<K>	Matrix<K>::operator*( const Real& scalar ) const
 {
 	Matrix	m = *this;
 
-	m.scl(scalar.getReal());
+	m.scl(scalar);
 	return (m);
 }
 

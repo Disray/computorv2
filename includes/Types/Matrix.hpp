@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 16:28:09 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/02 19:55:56 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/04 12:30:42 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class Matrix
 		size_t					getRows() const;
 		size_t					getCols() const;
 		bool					empty() const;
+		Matrix<K>				identity() const;
 		K&						at( size_t row, size_t col );
 		const K&				at( size_t row, size_t col ) const;
 		K&						operator()( size_t row, size_t col );
@@ -61,6 +62,7 @@ class Matrix
 		void					sub( const Matrix& m );
 		void					scl( const Real& scalar );
 		Matrix<K>				mul_mat( const Matrix<K>& mat ) const;
+		Matrix<K>				pow( int exp ) const;
 
 		Matrix					operator+( const Matrix& ) const;
 		Matrix					operator-( const Matrix& ) const;

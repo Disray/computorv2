@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Real.hpp"
+
 namespace maths
 {
 
@@ -37,6 +39,27 @@ T			pow( T base, int exp )
 		exp /= 2;
 	}
 	return (res);
+}
+
+inline Real	sqrt( Real x )
+{
+	if (x <= 0.0)
+		return (0.0);
+
+	Real		guess = x / 2;
+	const Real	tolerance = 1e-6;
+
+	while (true)
+	{
+		Real	other_side = x / guess;
+		Real	new_guess = (guess + other_side) / 2;
+
+		Real	diff = abs(guess - new_guess);
+
+		if (diff < tolerance)
+			return (new_guess);
+		guess = new_guess;
+	}
 }
 
 }

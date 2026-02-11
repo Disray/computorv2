@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 16:03:10 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/02 16:38:42 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/11 16:32:06 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,11 @@ Real::operator long() const
 Real::operator int() const
 {
 	return (static_cast<int>(this->real));
+}
+
+Real::operator double() const
+{
+	return (this->getReal());
 }
 
 Real	Real::operator-() const noexcept
@@ -142,4 +147,9 @@ bool	Real::operator<=( const Real& other ) const noexcept
 bool	Real::operator!=( const Real& other ) const noexcept
 {
 	return (this->real != other.real);
+}
+
+Real	Real::square() const noexcept
+{
+	return (Real(real * real));
 }

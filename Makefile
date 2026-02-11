@@ -24,7 +24,15 @@ SRCS_FILES =	main.cpp \
 \
 				Types/Complex.cpp \
 				Types/Real.cpp \
-				Types/Polynomial.cpp \
+				Types/Polynomial/Polynomial_core.cpp \
+				Types/Polynomial/Polynomial_eval.cpp \
+				Types/Polynomial/Polynomial_free_ops.cpp \
+				Types/Polynomial/Polynomial_io.cpp \
+				Types/Polynomial/Polynomial_ops_addsub.cpp \
+				Types/Polynomial/Polynomial_ops_divmod.cpp \
+				Types/Polynomial/Polynomial_ops_mul.cpp \
+				Types/Polynomial/Polynomial_pow.cpp \
+				Types/Polynomial/Polynomial_solve.cpp \
 \
 				Visitors/BinaryOpVisitor.cpp \
 				Visitors/UnaryOpVisitor.cpp \

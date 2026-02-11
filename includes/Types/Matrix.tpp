@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 12:10:48 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/04 11:02:46 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/04 12:34:46 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,4 +251,35 @@ Matrix<K>	Matrix<K>::mul_mat( const Matrix<K>& mat ) const
 		}
 	}
 	return (result);
+}
+
+template<real_complex K>
+Matrix<K>	Matrix<K>::identity() const
+{
+	Matrix<K>	id(_rows, _cols);
+	
+	for (size_t i = 0; i < _rows; i++)
+		id(i, i) = K(1);
+	return (id);
+}
+
+template<real_complex K>
+Matrix<K>	Matrix<K>::pow( int exp ) const
+{
+	if (getRows() != getCols())
+		throw std::runtime_error("Power only for square matrices");
+	if (exp < 0)
+		throw std::runtime_error("Negative matrix power not supported");
+
+	Matrix<K>	res = identity();
+	Matrix<K>	base = *this;
+
+	while (exp > 0)
+	{
+		if (exp % 2 == 1)
+			res = res.mul_mat(base);
+		base = base.mul_mat(base);
+		exp /= 2;
+	}
+	return (res);
 }

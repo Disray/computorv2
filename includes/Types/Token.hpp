@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 14:35:53 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/05 20:24:20 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/12 19:20:18 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,3 @@ struct Token
 
 	Token( const std::string& v, const TokenType& t, const Arity& a, const OpKind& o ) : value(v), type(t), arity(a), op(o) {}
 };
-
-struct Target
-{
-	std::string	name;
-	std::string	param;
-	bool		isFunction;
-
-	Target( const std::string& n, const std::string& p, bool f ) : name(n), param(p), isFunction(f) {}
-};
-

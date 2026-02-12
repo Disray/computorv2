@@ -18,9 +18,8 @@ OBJS = $(SRCS:$(SRCS_PATH)%.cpp=$(OBJS_PATH)%.o)
 
 SRCS_FILES =	main.cpp \
 				Parser.cpp \
-				parse_and_assign.cpp \
-				lexer.cpp \
-				pre_pass.cpp \
+				Interpreter.cpp \
+				Lexer.cpp \
 \
 				Types/Complex.cpp \
 				Types/Real.cpp \

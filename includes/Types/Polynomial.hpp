@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:28:00 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/09 15:24:43 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/12 18:38:47 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "Matrix.hpp"
 #include <vector>
 #include <string>
+#include <variant>
 
 class Polynomial;
 

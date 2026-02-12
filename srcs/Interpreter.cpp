@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_and_assign.cpp                               :+:      :+:    :+:   */
+/*   Interpreter.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:13:06 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/11 17:20:46 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/12 20:43:28 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Parser.hpp"
+#include "Interpreter.hpp"
 #include <type_traits>
 
-int		find_equal_index( const std::vector<Token>& tokens )
+Interpreter::Interpreter( Context& ctx ) : _ctx(ctx) {}
+
+Interpreter::~Interpreter() {}
+
+int		Interpreter::findEqualIndex( const std::vector<Token>& tokens ) const
 {
 	for (size_t i = 0; i < tokens.size(); i++)
 	{
@@ -23,7 +27,7 @@ int		find_equal_index( const std::vector<Token>& tokens )
 	return (-1);
 }
 
-void	print_vartype( const VarType& v, const std::string& polyVar = "x" )
+void	Interpreter::printVarType( const VarType& v, const std::string& polyVar ) const
 {
 	std::visit([&](const auto& value)
 	{
@@ -36,45 +40,26 @@ void	print_vartype( const VarType& v, const std::string& polyVar = "x" )
 	}, v);
 }
 
-void	handle_query( const std::string& target, const std::string& param, bool isFunc, Context& ctx )
-{
-	auto	it = ctx.find(target);
-	if (it == ctx.end())
-		throw std::runtime_error("Variable or function '" + target + "' is not defined.");
-
-	if (isFunc)
-	{
-		const Polynomial*	poly = std::get_if<Polynomial>(&it->second);
-		if (!poly)
-			throw std::runtime_error(target + " is not a function.");
-		auto	it_param = ctx.find(param);
-		if (it_param == ctx.end())
-			throw std::runtime_error("Parameter '" + param + "' has no value assigned.");
-		VarType	result = poly->eval(it_param->second);
-		print_vartype(result, param.empty() ? "x" : param);
-	}
-	else
-		print_vartype(it->second, "x");
-}
-
-Target	parse_lhs( const std::vector<Token>& tokens )
+Target	Interpreter::parseLHS( const std::vector<Token>& tokens ) const
 {
 	if (tokens.size() == 1 && tokens[0].type == TokenType::VARIABLE)
-		return (Target(tokens[0].value, "", false));
+		return (Target(tokens[0], Token("", TokenType::UNKOWN, Arity::CONSTANT, OpKind::NONE), false));
 	if (tokens.size() == 4 && 
 		tokens[0].type == TokenType::VARIABLE &&
 		tokens[1].type == TokenType::BRACKET_OPEN &&
-		tokens[2].type == TokenType::VARIABLE &&
+		(tokens[2].type == TokenType::VARIABLE || tokens[2].type == TokenType::NUMBER) &&
 		tokens[3].type == TokenType::BRACKET_CLOSE)
-		return (Target(tokens[0].value, tokens[2].value, true));
+	{
+		return (Target(tokens[0], tokens[2], true));
+	}
 	throw std::runtime_error("Syntax Error: Left side must be a variable or function declaration.");
 }
 
-void	execute_query( const Target& target, const std::vector<Token>& rhsTokens, Context& ctx )
+void	Interpreter::executeQuery( const Target& target, const std::vector<Token>& rhsTokens ) const
 {
-	auto it = ctx.find(target.name);
-	if (it == ctx.end())
-		throw std::runtime_error("Unknown variable or function: " + target.name);
+	auto it = _ctx.find(target.name.value);
+	if (it == _ctx.end())
+		throw std::runtime_error("Unknown variable or function: " + target.name.value);
 
 	if (!rhsTokens.empty())
 	{
@@ -83,10 +68,10 @@ void	execute_query( const Target& target, const std::vector<Token>& rhsTokens, C
 
 		const Polynomial*	poly = std::get_if<Polynomial>(&it->second);
 		if (!poly)
-			throw std::runtime_error(target.name + " is not a polynomial function.");
+			throw std::runtime_error(target.name.value + " is not a polynomial function.");
 
 		Parser	parser(rhsTokens);
-		VarType	rhsResult = parser.parse()->eval(ctx);
+		VarType	rhsResult = parser.parse()->eval(_ctx);
 		
 		if (std::holds_alternative<Real>(rhsResult))
 		{
@@ -106,27 +91,28 @@ void	execute_query( const Target& target, const std::vector<Token>& rhsTokens, C
 	{
 		if (target.isFunction)
 		{
-			auto	itParam = ctx.find(target.param);
-			if (itParam == ctx.end())
-				throw std::runtime_error("Parameter '" + target.param + "' is not defined in context.");
+			if (target.param.type == TokenType::NUMBER)
+			auto	itParam = _ctx.find(target.param.value);
+			if (itParam == _ctx.end())
+				throw std::runtime_error("Parameter '" + target.param.value + "' is not defined in context.");
 
 			const Polynomial*	poly = std::get_if<Polynomial>(&it->second);
 
 			if (!poly)
-				throw std::runtime_error(target.name + " is not a polynomial function.");
-			print_vartype(poly->eval(itParam->second));
+				throw std::runtime_error(target.name.value + " is not a polynomial function.");
+			printVarType(poly->eval(itParam->second));
 		}
 		else
-			print_vartype(it->second);
+			printVarType(it->second);
 	}
 }
 
-void	execute_assignment( const Target& target, const std::vector<Token>& rhsTokens, Context& ctx )
+void	Interpreter::executeAssignment( const Target& target, const std::vector<Token>& rhsTokens )
 {
-	Context evalCtx = ctx;
+	Context evalCtx = _ctx;
 
 	if (target.isFunction)
-		evalCtx[target.param] = Polynomial({0, 1});
+		evalCtx[target.param.value] = Polynomial({0, 1});
 
 	Parser	parser(rhsTokens);
 	VarType	result = parser.parse()->eval(evalCtx);
@@ -134,16 +120,16 @@ void	execute_assignment( const Target& target, const std::vector<Token>& rhsToke
 	if (target.isFunction && !std::holds_alternative<Polynomial>(result))
 		throw std::runtime_error("Function must evaluate to a Polynomial");
 
-	ctx[target.name] = result;
+	_ctx[target.name.value] = result;
 
-	std::cout << target.name;
+	std::cout << target.name.value;
 	if (target.isFunction)
-		std::cout << "(" << target.param << ")";
+		std::cout << "(" << target.param.value << ")";
 	std::cout << " = ";
-	print_vartype(result);
+	printVarType(result);
 }
 
-void	process_line( std::vector<Token>& tokens, Context& ctx )
+void	Interpreter::processLine( std::vector<Token>& tokens )
 {
 	if (tokens.empty())
 		return;
@@ -157,25 +143,25 @@ void	process_line( std::vector<Token>& tokens, Context& ctx )
 			return;
 	}
 
-	int eq = find_equal_index(tokens);
+	int eq = findEqualIndex(tokens);
 
 	if (eq == -1)
 	{
 		Parser parser(tokens);
-		VarType result = parser.parse()->eval(ctx);
-		print_vartype(result);
+		VarType result = parser.parse()->eval(_ctx);
+		printVarType(result);
 		return;
 	}
 
 	std::vector<Token>	lhsTokens(tokens.begin(), tokens.begin() + eq);
 	std::vector<Token>	rhsTokens(tokens.begin() + eq + 1, tokens.end());
 
-	Target				target = parse_lhs(lhsTokens);
+	Target				target = parseLHS(lhsTokens);
 
 	if (isQuery)
-		execute_query(target, rhsTokens, ctx);
+		executeQuery(target, rhsTokens);
 	else
-		execute_assignment(target, rhsTokens, ctx);
+		executeAssignment(target, rhsTokens);
 }
 
 // void	parse_and_assign( std::vector<Token>& tokens, Context& ctx )

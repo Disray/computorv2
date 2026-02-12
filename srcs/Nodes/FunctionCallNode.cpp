@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:13:15 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/28 20:56:53 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/12 18:47:21 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,10 @@ VarType	FunctionCallNode::eval( Context& ctx ) const
 		throw std::runtime_error("Not a function");
 
 	if (const Real* r = std::get_if<Real>(&x))
-        return (p->eval(*r));
-    if (const Complex* z = std::get_if<Complex>(&x))
-        return (p->eval(*z));
-    if (const Polynomial* poly = std::get_if<Polynomial>(&x))
-        return (p->eval(*poly));
-
+		return (p->eval(*r));
+	if (const Complex* z = std::get_if<Complex>(&x))
+		return (p->eval(*z));
+	if (const Polynomial* poly = std::get_if<Polynomial>(&x))
+		return (p->eval(*poly));
 	throw std::runtime_error("Invalid function argument type");
 }

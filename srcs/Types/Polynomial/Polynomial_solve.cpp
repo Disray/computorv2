@@ -76,6 +76,8 @@ std::vector<Root>	Polynomial::solve_degree_2( bool verbose ) const
 	{
 		Real	x = -b / (Real(2) * a);
 
+		if (x == 0)
+			x = Real(0);
 		if (verbose)
 			std::cout << "Discriminant is null, the solution is:\n" << x << std::endl;
 		return (std::vector<Root>{Root{ x }});

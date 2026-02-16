@@ -104,4 +104,7 @@ fclean: clean
 
 re: fclean all
 
+test: re
+	@./run_tests.sh
+
 .PHONY: all clean fclean re"

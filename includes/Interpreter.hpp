@@ -6,11 +6,11 @@
 
 struct Target
 {
-	Token	name;
-	Token	param;
+	std::string	name;
+	std::string	param;
 	bool	isFunction;
 
-	Target( const Token& n, const Token& p, bool f ) : name(n), param(p), isFunction(f) {}
+	Target( const std::string& n, const std::string& p, bool f ) : name(n), param(p), isFunction(f) {}
 };
 
 class Interpreter

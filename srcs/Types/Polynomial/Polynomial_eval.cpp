@@ -40,7 +40,6 @@ Polynomial	Polynomial::eval( const Polynomial& other ) const
 	return (result);
 }
 
-
 Matrix<Real>	Polynomial::eval( const Matrix<Real>& m ) const
 {
 	if (m.getRows() != m.getCols())

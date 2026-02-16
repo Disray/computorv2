@@ -23,7 +23,10 @@ Polynomial	operator-( const Polynomial& p, const Real& x )
 
 Polynomial	operator-( const Real& x, const Polynomial& p )
 {
-	return (p - x);
+	Polynomial	result = x;
+
+	result = result - p;
+	return (result);
 }
 
 Polynomial	operator/( const Polynomial& p, const Real& x )
@@ -36,7 +39,10 @@ Polynomial	operator/( const Polynomial& p, const Real& x )
 
 Polynomial	operator/( const Real& x, const Polynomial& p )
 {
-	return (p / x);
+	Polynomial	result = x;
+
+	result = result / p;
+	return (result);
 }
 
 Polynomial	operator*( const Polynomial& p, const Real& x )

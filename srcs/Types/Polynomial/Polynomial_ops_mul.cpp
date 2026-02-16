@@ -12,9 +12,7 @@ Polynomial	Polynomial::operator*( const Polynomial& other ) const noexcept
 	for (size_t i = 0; i < coeffs.size(); i++)
 	{
 		for (size_t j = 0; j < other.coeffs.size(); j++)
-		{
 			result.coeffs[i + j] += coeffs[i] * other.coeffs[j];
-		}
 	}
 	result.trim();
 	return (result);

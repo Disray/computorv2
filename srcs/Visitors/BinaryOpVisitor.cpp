@@ -176,7 +176,7 @@ VarType	BinaryOpVisitor::operator()( const Real& x, const Polynomial& p ) const
 	}
 }
 
-VarType	BinaryOpVisitor::operator()( const Polynomial& x, const Real& p ) const
+VarType	BinaryOpVisitor::operator()( const Polynomial& p, const Real& x ) const
 {
 	switch (value)
 	{
@@ -186,9 +186,9 @@ VarType	BinaryOpVisitor::operator()( const Polynomial& x, const Real& p ) const
 		case OpKind::DIV: return (p / x);
 		case OpKind::POW:
 		{
-			if (p < 0 || Real(static_cast<int>(p)) != p)
+			if (x < 0 || Real(static_cast<int>(x)) != x)
 				throw std::runtime_error("Invalid exponent");
-			return (x.pow(static_cast<int>(p)));
+			return (p.pow(static_cast<int>(x)));
 		}
 		default:
 			throw std::runtime_error("Unkown operator");

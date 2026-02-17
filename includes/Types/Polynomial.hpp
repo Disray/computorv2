@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:28:00 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/12 18:38:47 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/17 13:25:52 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ class Polynomial
 		std::vector<Root>			solve( bool verbose = false ) const;
 		void						trim();
 		bool						empty() const noexcept;
+		size_t						size() const noexcept;
 		PolyPrint					print( const std::string& varName = "x" ) const;
 		const std::vector<Real>&	getCoeffs() const;
 		Polynomial					pow( int ) const;

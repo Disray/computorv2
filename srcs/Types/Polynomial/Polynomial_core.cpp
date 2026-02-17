@@ -33,3 +33,8 @@ const std::vector<Real>&	Polynomial::getCoeffs() const
 {
 	return (coeffs);
 }
+
+size_t	Polynomial::size() const noexcept
+{
+	return (coeffs.size());
+}

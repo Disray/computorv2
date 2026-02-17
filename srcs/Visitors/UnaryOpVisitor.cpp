@@ -45,9 +45,15 @@ VarType	UnaryOpVisitor::operator()( const Matrix<Complex>& m ) const
 	}
 }
 
-VarType	UnaryOpVisitor::operator()( const Polynomial& ) const
+VarType	UnaryOpVisitor::operator()( const Polynomial& p ) const
 {
-	throw std::runtime_error("Invalid unary operator");
+	switch (value)
+	{
+		case OpKind::ADD: return (p);
+		case OpKind::SUB: return (-p);
+		default:
+			throw std::runtime_error("Unknown unary operator");
+	}
 }
 
 VarType	apply_unary_op( const OpKind& op, const VarType& a )

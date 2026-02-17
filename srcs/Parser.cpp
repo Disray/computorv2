@@ -34,7 +34,7 @@ Real	parse_real_literal( const std::string& s )
 	{
 		v = std::stod(s, &idx);
 	}
-	catch(const std::exception& e)
+	catch (const std::exception& e)
 	{
 		throw std::runtime_error("Invalid number literal: " + s);
 	}

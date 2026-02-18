@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 15:39:07 by rrichard          #+#    #+#             */
-/*   Updated: 2026/01/14 14:55:39 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/18 15:40:59 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,3 +24,12 @@
 
 using VarType = std::variant<Real, Complex, Polynomial, Matrix<Real>, Matrix<Complex>>;
 using Context = std::map<std::string, VarType>;
+
+inline std::ostream&	operator<<( std::ostream& os, const VarType& v )
+{
+	std::visit([&os]( const auto& value )
+	{
+		os << value;
+	}, v);
+	return (os);
+}

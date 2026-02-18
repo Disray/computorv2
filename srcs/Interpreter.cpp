@@ -16,19 +16,6 @@ int		Interpreter::findEqualIndex( const std::vector<Token>& tokens ) const
 	return (-1);
 }
 
-void	Interpreter::printVarType( const VarType& v, const std::string& polyVar ) const
-{
-	std::visit([&](const auto& value)
-	{
-		using T = std::remove_cvref_t<decltype(value)>;
-
-		if constexpr (std::is_same_v<T, Polynomial>)
-			std::cout << value.print(polyVar) << std::endl;
-		else
-			std::cout << value << std::endl;
-	}, v);
-}
-
 Target	Interpreter::parseLHS( const std::vector<Token>& tokens ) const
 {
 	if (tokens.size() == 1 && tokens[0].type == TokenType::VARIABLE)
@@ -88,10 +75,10 @@ void	Interpreter::executeQuery( const Target& target, const std::vector<Token>& 
 
 			if (!poly)
 				throw std::runtime_error(target.name + " is not a polynomial function.");
-			printVarType(poly->eval(itParam->second));
+			std::cout << poly->eval(itParam->second) << std::endl;
 		}
 		else
-			printVarType(it->second);
+			std::cout << it->second << std::endl;
 	}
 }
 
@@ -105,16 +92,19 @@ void	Interpreter::executeAssignment( const Target& target, const std::vector<Tok
 	Parser	parser(rhsTokens);
 	VarType	result = parser.parse()->eval(evalCtx);
 
-	if (target.isFunction && !std::holds_alternative<Polynomial>(result))
-		throw std::runtime_error("Function must evaluate to a Polynomial");
+	if (target.isFunction)
+	{
+		if (!std::holds_alternative<Polynomial>(result))
+			throw std::runtime_error("Function must evaluate to a Polynomial");
+		std::get<Polynomial>(result).setVarName(target.param);
+	}
 
 	_ctx[target.name] = result;
 
 	std::cout << target.name;
 	if (target.isFunction)
 		std::cout << "(" << target.param << ")";
-	std::cout << " = ";
-	printVarType(result);
+	std::cout << " = " << result << std::endl;
 }
 
 void	Interpreter::processLine( std::vector<Token>& tokens )
@@ -137,7 +127,7 @@ void	Interpreter::processLine( std::vector<Token>& tokens )
 	{
 		Parser parser(tokens);
 		VarType result = parser.parse()->eval(_ctx);
-		printVarType(result);
+		std::cout << result << std::endl;
 		return;
 	}
 
@@ -149,7 +139,7 @@ void	Interpreter::processLine( std::vector<Token>& tokens )
 		if (rhsTokens.empty())
 		{
 			Parser	parser(lhsTokens);
-			printVarType(parser.parse()->eval(_ctx));
+			std::cout << parser.parse()->eval(_ctx) << std::endl;
 		}
 		else
 		{

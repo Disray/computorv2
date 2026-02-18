@@ -38,3 +38,13 @@ size_t	Polynomial::size() const noexcept
 {
 	return (coeffs.size());
 }
+
+std::string	Polynomial::getVarName() const
+{
+	return (varName);
+}
+
+void	Polynomial::setVarName( const std::string& name )
+{
+	varName = name;
+}

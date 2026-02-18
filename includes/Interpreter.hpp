@@ -8,7 +8,7 @@ struct Target
 {
 	std::string	name;
 	std::string	param;
-	bool	isFunction;
+	bool		isFunction;
 
 	Target( const std::string& n, const std::string& p, bool f ) : name(n), param(p), isFunction(f) {}
 };
@@ -19,7 +19,6 @@ class Interpreter
 		Context&	_ctx;
 
 		int		findEqualIndex( const std::vector<Token>& tokens) const;
-		void	printVarType( const VarType& v, const std::string& polyVar = "x") const;
 		Target	parseLHS( const std::vector<Token>& tokens ) const;
 		void	executeQuery( const Target& target, const std::vector<Token>& rhsTokens ) const;
 		void	executeAssignment( const Target& target, const std::vector<Token>& rhsTokens);

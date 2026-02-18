@@ -6,7 +6,7 @@
 /*   By: rrichard <rrichard@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/14 14:28:00 by rrichard          #+#    #+#             */
-/*   Updated: 2026/02/17 13:25:52 by rrichard         ###   ########.fr       */
+/*   Updated: 2026/02/18 14:29:39 by rrichard         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,13 @@
 #include <string>
 #include <variant>
 
-class Polynomial;
-
-struct PolyPrint
-{
-	const Polynomial&	poly;
-	std::string			var;
-};
-
-std::ostream&	operator<<( std::ostream&, const PolyPrint& );
 using Root = std::variant<Real, Complex>;
 
 class Polynomial
 {
 	private:
 		std::vector<Real>	coeffs;
+		std::string			varName = "x";
 
 		std::pair<Polynomial, Polynomial>	euclidean_div( const Polynomial& b ) const;
 		std::vector<Root>					solve_degree_0( bool ) const;
@@ -64,15 +56,16 @@ class Polynomial
 			}, arg);
 		}
 
+		std::string					getVarName() const;
+		void						setVarName( const std::string& );
 		std::vector<Root>			solve( bool verbose = false ) const;
 		void						trim();
 		bool						empty() const noexcept;
 		size_t						size() const noexcept;
-		PolyPrint					print( const std::string& varName = "x" ) const;
 		const std::vector<Real>&	getCoeffs() const;
 		Polynomial					pow( int ) const;
 		
-		friend std::ostream&	operator<<( std::ostream&, const Polynomial& );
+		friend std::ostream&		operator<<( std::ostream&, const Polynomial& );
 
 		Polynomial	operator+( const Polynomial& ) const noexcept;
 		Polynomial&	operator+=( const Polynomial& ) noexcept;

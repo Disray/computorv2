@@ -1,42 +1,33 @@
+
 #include "Polynomial.hpp"
 
-PolyPrint	Polynomial::print( const std::string& var ) const
+std::ostream&	operator<<( std::ostream& os, const Polynomial& p )
 {
-	return (PolyPrint{*this, var});
-}
-
-std::ostream&	operator<<( std::ostream& os, const PolyPrint& p )
-{
-	const auto&	coeffs = p.poly.getCoeffs();
-
-	if (coeffs.empty())
+	if (p.empty())
 		return (os << "0");
 
 	bool	printed_any = false;
 
-	for (size_t i = coeffs.size(); i-- > 0;)
+	for (size_t i = p.size(); i-- > 0;)
 	{
-		Real coeff = coeffs[i];
+		Real	coeff = p.coeffs[i];
 
-		if (coeff == Real(0.))
+		if (coeff == 0)
 			continue;
 
-		double real = coeff.getReal();
-
 		if (printed_any)
-			os << (real >= 0. ? " + " : " - ");
-		else if (real < 0.)
-			os << " - ";
+			os << (coeff >= 0 ? " + " : " - ");
+		else if (coeff < 0)
+			os << "-";
 
-		Real	mag = (real < 0.) ? -coeff : coeff;
-
-		bool	is_one = (mag == Real(1.));
+		Real	mag = maths::abs(coeff);
+		bool	is_one = (mag == 1);
 
 		if (i == 0 || !is_one)
 			os << mag;
 		if (i > 0)
 		{
-			os << p.var;
+			os << p.varName;
 			if (i > 1)
 				os << "^" << i;
 		}

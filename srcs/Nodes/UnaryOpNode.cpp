@@ -1,4 +1,3 @@
-
 #include "UnaryOpNode.hpp"
 
 UnaryOpNode::UnaryOpNode( OpKind v, NodePtr c ) : op(v), child(std::move(c)) {}

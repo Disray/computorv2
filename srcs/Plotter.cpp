@@ -1,4 +1,3 @@
-
 #include "Plotter.hpp"
 #include "Maths.hpp"
 #include <limits>

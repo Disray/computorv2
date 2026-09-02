@@ -1,4 +1,3 @@
-
 #include "ImaginaryNode.hpp"
 
 NodePtr	ImaginaryNode::clone() const

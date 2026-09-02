@@ -1,4 +1,3 @@
-
 #include "Complex.hpp"
 
 std::ostream&	operator<<( std::ostream& os, const Complex& z )

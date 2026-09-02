@@ -1,4 +1,3 @@
-
 #include "FunctionCallNode.hpp"
 
 FunctionCallNode::FunctionCallNode( std::string n, NodePtr a ) : name(std::move(n)), arg(std::move(a)) {}

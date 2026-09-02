@@ -1,4 +1,3 @@
-
 #include "BuiltinFunctionNode.hpp"
 #include "Maths.hpp"
 #include "Settings.hpp"

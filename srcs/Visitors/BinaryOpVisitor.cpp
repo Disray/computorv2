@@ -1,4 +1,3 @@
-
 #include "Visitors/BinaryOpVisitor.hpp"
 #include "Maths.hpp"
 

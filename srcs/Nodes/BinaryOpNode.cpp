@@ -1,4 +1,3 @@
-
 #include "BinaryOpNode.hpp"
 
 BinaryOpNode::BinaryOpNode( OpKind v, NodePtr l, NodePtr r ) : op(v), left(std::move(l)), right(std::move(r)) {}

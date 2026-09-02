@@ -1,4 +1,3 @@
-
 #include "Real.hpp"
 #include "Fraction.hpp"
 #include "Maths.hpp"

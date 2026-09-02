@@ -1,4 +1,3 @@
-
 #include "Lexer.hpp"
 #include <regex>
 #include <cctype>

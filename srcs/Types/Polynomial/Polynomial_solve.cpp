@@ -1,4 +1,3 @@
-
 #include "Polynomial.hpp"
 #include "Maths.hpp"
 

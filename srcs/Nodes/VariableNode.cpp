@@ -1,4 +1,3 @@
-
 #include "VariableNode.hpp"
 
 VariableNode::VariableNode( std::string n ) : name(std::move(n)) {}

@@ -1,4 +1,3 @@
-
 #include "MatrixNode.hpp"
 
 MatrixNode::MatrixNode( std::vector<std::vector<NodePtr>> elems ) : elements(std::move(elems)) {}

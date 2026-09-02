@@ -1,4 +1,3 @@
-
 #include "TokenPreprocessor.hpp"
 
 namespace

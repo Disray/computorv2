@@ -1,4 +1,3 @@
-
 #include "NumberNode.hpp"
 
 NumberNode::NumberNode( Real v ) : value(v) {}

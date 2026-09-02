@@ -1,4 +1,3 @@
-
 #include "Maths.hpp"
 
 namespace

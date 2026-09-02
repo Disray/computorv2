@@ -1,4 +1,3 @@
-
 #include "Visitors/UnaryOpVisitor.hpp"
 
 VarType	UnaryOpVisitor::operator()( const Real& a ) const

@@ -1,4 +1,3 @@
-
 #include "Interpreter.hpp"
 #include "InterpreterCommandHandler.hpp"
 #include "Plotter.hpp"

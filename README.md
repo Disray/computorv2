@@ -17,7 +17,7 @@ This project is part of the **42 School Post-Common Core curriculum** (Advanced 
 ### Core Engineering Constraints
 - **Zero External Mathematical Libraries**: Standard math library headers (`<cmath>`, `<math.h>`) and external CAS engines are forbidden. All elementary, trigonometric, exponential, linear algebraic, and polynomial algorithms are designed and implemented from first principles.
 - **Strict Modern C++ Idioms**: Compiled under `-Wall -Wextra -Werror -std=c++20`. Employs C++20 concepts, `std::variant`-based algebraic data types, `std::unique_ptr` polymorphic hierarchies, type-safe double-dispatch visitors, and RAII memory lifecycle management.
-- **Multi-Paradigm Domain Algebra**: Simultaneous support for Real numbers ($\mathbb{R}$), Complex numbers ($\mathbb{C}$), Matrices ($\mathcal{M}_{m,n}(\mathbb{R})$ / $\mathcal{M}_{m,n}(\mathbb{C})$), and Polynomials ($\mathbb{R}[X]$) with complete cross-domain operator interop.
+- **Multi-Paradigm Domain Algebra**: Simultaneous support for Real numbers (`ℝ`), Complex numbers (`ℂ`), Matrices (`M_{m,n}(ℝ)` / `M_{m,n}(ℂ)`), and Polynomials (`ℝ[X]`) with complete cross-domain operator interop.
 
 ---
 
@@ -78,14 +78,14 @@ The pipeline follows a decoupled compiler architecture: raw user input is lexed 
 
 | Module | Location | Primary Responsibilities |
 | :--- | :--- | :--- |
-| **Lexer & Preprocessor** | [`Lexer.cpp`](srcs/Lexer.cpp), [`TokenPreprocessor.cpp`](srcs/Interpreter/TokenPreprocessor.cpp) | Regex-based token extraction; arity disambiguation (unary vs binary `+`/`-`); implicit multiplication insertion (`2x` $\to 2 \cdot x$). |
+| **Lexer & Preprocessor** | [`Lexer.cpp`](srcs/Lexer.cpp), [`TokenPreprocessor.cpp`](srcs/Interpreter/TokenPreprocessor.cpp) | Regex-based token extraction; arity disambiguation (unary vs binary `+`/`-`); implicit multiplication insertion (`2x` → `2 * x`). |
 | **Parser & AST Nodes** | [`Parser.cpp`](srcs/Parser.cpp), [`srcs/Nodes/`](srcs/Nodes/) | Recursive-descent grammar parsing with standard operator precedence; builds AST using `std::unique_ptr<BaseNode>` hierarchy. |
 | **Visitor Evaluator** | [`srcs/Visitors/`](srcs/Visitors/), [`InterpreterEvaluator.cpp`](srcs/Interpreter/InterpreterEvaluator.cpp) | Double-dispatch evaluation via `std::visit` and operator overloads for cross-type operations. |
-| **Numerical Kernel** | [`srcs/Maths/`](srcs/Maths/) | Custom transcendental engine: Taylor series ($\sin, \cos, \tan, \exp$), Newton-Raphson square roots, modular range reduction. |
-| **Linear Algebra** | [`Matrix.hpp`](includes/Types/Matrix.hpp), [`Matrix.tpp`](includes/Types/Matrix.tpp) | Templated matrix algebra constrained with C++20 concepts; Gauss-Jordan elimination with partial pivoting; matrix powers ($\mathcal{O}(\log k)$). |
-| **Polynomial Engine** | [`srcs/Types/Polynomial/`](srcs/Types/Polynomial/) | Polynomial algebra, Horner evaluation, Euclidean division (quotient & remainder), and analytic root solver ($\le 2^{\text{nd}}$ degree). |
-| **Exact Output & Formatting** | [`Real.cpp`](srcs/Types/Real.cpp), [`Fraction.cpp`](srcs/Fraction.cpp) | Continued fraction approximation (convergents $h_n/k_n$); exact radical/$\pi$ representation detection. |
-| **Subpixel Terminal Plotter** | [`Plotter.cpp`](srcs/Plotter.cpp) | High-resolution terminal canvas rendering equations onto UTF-8 Braille matrix blocks ($2\times 4$ subpixels per glyph). |
+| **Numerical Kernel** | [`srcs/Maths/`](srcs/Maths/) | Custom transcendental engine: Taylor series (`sin`, `cos`, `tan`, `exp`), Newton-Raphson square roots, modular range reduction. |
+| **Linear Algebra** | [`Matrix.hpp`](includes/Types/Matrix.hpp), [`Matrix.tpp`](includes/Types/Matrix.tpp) | Templated matrix algebra constrained with C++20 concepts; Gauss-Jordan elimination with partial pivoting; matrix powers (O(log k)). |
+| **Polynomial Engine** | [`srcs/Types/Polynomial/`](srcs/Types/Polynomial/) | Polynomial algebra, Horner evaluation, Euclidean division (quotient & remainder), and analytic root solver (≤ 2nd degree). |
+| **Exact Output & Formatting** | [`Real.cpp`](srcs/Types/Real.cpp), [`Fraction.cpp`](srcs/Fraction.cpp) | Continued fraction approximation (convergents $h_n/k_n$); exact radical/π representation detection. |
+| **Subpixel Terminal Plotter** | [`Plotter.cpp`](srcs/Plotter.cpp) | High-resolution terminal canvas rendering equations onto UTF-8 Braille matrix blocks (2 × 4 subpixels per glyph). |
 
 ---
 
@@ -116,22 +116,22 @@ concept real_complex = std::same_as<K, Real> || std::same_as<K, Complex>;
 template<real_complex K>
 class Matrix { ... };
 ```
-Matrix inversion is solved in $\mathcal{O}(N^3)$ via **Gauss-Jordan elimination with partial column pivoting** (`findIndexMaxAbsColumn`), guaranteeing numerical stability when handling small pivot values. Fast binary exponentiation computes matrix powers $M^k$ in $\mathcal{O}(\log k)$ matrix multiplications.
+Matrix inversion is solved in O(N³) via **Gauss-Jordan elimination with partial column pivoting** (`findIndexMaxAbsColumn`), guaranteeing numerical stability when handling small pivot values. Fast binary exponentiation computes matrix powers $M^k$ in O(log k) matrix multiplications.
 
 ### 4. Continued Fraction Rational Approximation & Exact Formatting
 Floating-point outputs are evaluated through a continued fraction expansion algorithm generating best rational convergents:
 $$x = a_0 + \frac{1}{a_1 + \frac{1}{a_2 + \dots}}, \quad h_n = a_n h_{n-1} + h_{n-2}, \quad k_n = a_n k_{n-1} + k_{n-2}$$
-This allows the engine to automatically simplify decimal results (such as `0.333333` $\to `1/3`$, `3.5 + 2.5i` $\to `7/2 + 5/2i`$, and detect integral multiples of $\pi$ or integer square roots like `sqrt(30)`).
+This allows the engine to automatically simplify decimal results (such as `0.333333` → `1/3`, `3.5 + 2.5i` → `7/2 + 5/2i`, and detect integral multiples of π or integer square roots like `sqrt(30)`).
 
 ### 5. High-Density Subpixel Graphics via Unicode Braille Encoding
-The built-in `plot` command renders arbitrary polynomial curves directly in standard CLI terminals by mapping a continuous 2D coordinate grid to Unicode Braille patterns (`U+2800` through `U+28FF`). Each printed character contains a $2 \times 4$ binary dot matrix (8 subpixels per character block), yielding $4\times$ higher vertical resolution and $2\times$ higher horizontal resolution compared to standard ASCII character plotting.
+The built-in `plot` command renders arbitrary polynomial curves directly in standard CLI terminals by mapping a continuous 2D coordinate grid to Unicode Braille patterns (`U+2800` through `U+28FF`). Each printed character contains a 2 × 4 binary dot matrix (8 subpixels per character block), yielding 4× higher vertical resolution and 2× higher horizontal resolution compared to standard ASCII character plotting.
 
 ---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
-- C++20 compatible compiler (`clang++` $\ge 12$ or `g++` $\ge 10$)
+- C++20 compatible compiler (`clang++` >= 12 or `g++` >= 10)
 - GNU Make
 - `libreadline` development headers
 

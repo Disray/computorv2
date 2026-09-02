@@ -17,7 +17,7 @@ This project is part of the **42 School Post-Common Core curriculum** (Advanced 
 ### Core Engineering Constraints
 - **Zero External Mathematical Libraries**: Standard math library headers (`<cmath>`, `<math.h>`) and external CAS engines are forbidden. All elementary, trigonometric, exponential, linear algebraic, and polynomial algorithms are designed and implemented from first principles.
 - **Strict Modern C++ Idioms**: Compiled under `-Wall -Wextra -Werror -std=c++20`. Employs C++20 concepts, `std::variant`-based algebraic data types, `std::unique_ptr` polymorphic hierarchies, type-safe double-dispatch visitors, and RAII memory lifecycle management.
-- **Multi-Paradigm Domain Algebra**: Simultaneous support for Real numbers ($\mathbb{R}$), Complex numbers ($\mathbb{C}$), Matrices ($\mathcal{M}_{m,n}(\mathbb{R} \mid \mathbb{C})$), and Polynomials ($\mathbb{R}[X]$) with complete cross-domain operator interop.
+- **Multi-Paradigm Domain Algebra**: Simultaneous support for Real numbers ($\mathbb{R}$), Complex numbers ($\mathbb{C}$), Matrices ($\mathcal{M}_{m,n}(\mathbb{R})$ / $\mathcal{M}_{m,n}(\mathbb{C})$), and Polynomials ($\mathbb{R}[X]$) with complete cross-domain operator interop.
 
 ---
 
